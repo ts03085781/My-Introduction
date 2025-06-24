@@ -1,7 +1,7 @@
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { INFORMATION_OF_DEAN } from '@/constants/aiChat';
@@ -44,9 +44,9 @@ const AIChat: React.FC = () => {
     role: MessageRole.Assistant,
     content: t('page.aiChat.aiOpeningRemarks'),
   };
-
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const { isFetching, refetch } = useQuery({
     queryKey: ['aiChat'],
     queryFn: () => fetchAIChat(userInput),
@@ -80,8 +80,14 @@ const AIChat: React.FC = () => {
         JSON.stringify([AI_Opening_remarks])
       );
     }
-    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
+  }, [chatMessages]);
 
   const handleSend = async () => {
     if (!userInput.trim()) return;
@@ -152,7 +158,7 @@ const AIChat: React.FC = () => {
     <div>
       {/* 標題 */}
       <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
-      <div className="flex flex-col h-[calc(100vh-350px)] max-w-[550px] mx-auto">
+      <div className="flex flex-col h-[calc(100vh-280px)] max-w-[650px] mx-auto">
         <Button
           type="primary"
           color="danger"
@@ -163,7 +169,10 @@ const AIChat: React.FC = () => {
           {t('page.aiChat.clearConversation')}
         </Button>
         {/* 對話訊息顯示區 */}
-        <div className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4">
+        <div
+          className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4"
+          ref={messagesContainerRef}
+        >
           {/* 這裡未來會放訊息氣泡 */}
           {chatMessages.map((chatMessage, index) => {
             if (chatMessage.role === MessageRole.User) {
