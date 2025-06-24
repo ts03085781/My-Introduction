@@ -54,6 +54,7 @@ const AIChat: React.FC = () => {
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
+    isMicrophoneAvailable,
   } = useSpeechRecognition();
 
   // 語音辨識結果自動填入 userInput
@@ -120,6 +121,10 @@ const AIChat: React.FC = () => {
   const handleVoiceInput = () => {
     if (!browserSupportsSpeechRecognition) {
       alert('此瀏覽器不支援語音辨識');
+      return;
+    }
+    if (!isMicrophoneAvailable) {
+      alert('麥克風無法使用');
       return;
     }
     if (listening) {
