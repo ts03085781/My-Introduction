@@ -157,8 +157,15 @@ export default {
         aiOpeningRemarks:
           "Hello, I am Dean's AI assistant, how can I help you?",
         clearConversation: 'Clear Conversation',
+        clearConversationConfirm:
+          'Are you sure you want to delete the current conversation?',
         browserNotSupported: 'This browser does not support speech recognition',
         microphoneNotAvailable: 'Microphone is not available',
+        voiceInput: 'Voice Input',
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+        deleteHistory: 'Delete History',
+        deleteHistoryConfirm: 'You have successfully deleted the history.',
       },
     },
 

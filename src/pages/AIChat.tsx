@@ -2,7 +2,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button } from 'antd';
+import { Input, Button, Tooltip, Modal, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { INFORMATION_OF_DEAN } from '@/constants/aiChat';
 import { Message } from '@/types/aiChat';
@@ -12,6 +12,8 @@ import {
   AudioOutlined,
   AudioMutedOutlined,
   LoadingOutlined,
+  DeleteOutlined,
+  SendOutlined,
 } from '@ant-design/icons';
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
@@ -46,12 +48,21 @@ const AIChat: React.FC = () => {
   };
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const { isFetching, refetch } = useQuery({
     queryKey: ['aiChat'],
     queryFn: () => fetchAIChat(userInput),
     enabled: false,
   });
+
+  const openNotification = () => {
+    notification.open({
+      message: t('page.aiChat.deleteHistory'),
+      description: t('page.aiChat.deleteHistoryConfirm'),
+      placement: 'bottomLeft',
+    });
+  };
 
   // 語音辨識的 hook，用於語音辨識的結果自動填入 userInput
   const {
@@ -154,20 +165,23 @@ const AIChat: React.FC = () => {
     setChatMessages([AI_Opening_remarks]);
   };
 
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    openNotification();
+    handleClearConversation();
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
       {/* 標題 */}
       <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
       <div className="flex flex-col h-[calc(100vh-280px)] max-w-[650px] mx-auto">
-        <Button
-          type="primary"
-          color="danger"
-          variant="solid"
-          className="ml-2 px-4 py-2 rounded-lg mb-4 w-fit"
-          onClick={handleClearConversation}
-        >
-          {t('page.aiChat.clearConversation')}
-        </Button>
         {/* 對話訊息顯示區 */}
         <div
           className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4"
@@ -203,34 +217,64 @@ const AIChat: React.FC = () => {
           )}
         </div>
         {/* 輸入區 */}
-        <div className="flex items-center p-3 border rounded-lg">
-          <Input
-            type="text"
+        <div className="flex items-center rounded-lg flex-col justify-between border">
+          <Input.TextArea
+            autoSize={{ minRows: 1, maxRows: 5 }}
             placeholder={t('page.aiChat.placeholder')}
-            className="flex-1 mr-2"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             disabled={isFetching}
-            onPressEnter={handleSend}
+            variant="borderless"
+            // onPressEnter={handleSend}
           />
-          <Button
-            type={listening ? 'default' : 'dashed'}
-            className={` px-4 py-2 rounded-lg font-bold ${listening ? 'bg-red-200' : ''}`}
-            onClick={handleVoiceInput}
-          >
-            {listening ? <AudioMutedOutlined /> : <AudioOutlined />}
-          </Button>
-          <Button
-            type="primary"
-            className="px-4 py-2 rounded-lg ml-2"
-            onClick={handleSend}
-            loading={isFetching}
-            disabled={isFetching}
-          >
-            {t('page.aiChat.send')}
-          </Button>
+          <div className="flex items-center p-2 w-full justify-end">
+            {/* 語音輸入 */}
+            <Tooltip title={t('page.aiChat.voiceInput')}>
+              <Button
+                type={listening ? 'default' : 'dashed'}
+                className="px-4 py-2 rounded-lg font-bold"
+                onClick={handleVoiceInput}
+              >
+                {listening ? <AudioMutedOutlined /> : <AudioOutlined />}
+              </Button>
+            </Tooltip>
+            {/*發送按鈕*/}
+            <Tooltip title={t('page.aiChat.send')}>
+              <Button
+                type="primary"
+                className="px-4 py-2 rounded-lg ml-2"
+                onClick={handleSend}
+                loading={isFetching}
+                disabled={isFetching}
+              >
+                <SendOutlined />
+              </Button>
+            </Tooltip>
+            {/*清除對話*/}
+            <Tooltip title={t('page.aiChat.clearConversation')}>
+              <Button
+                type="primary"
+                color="danger"
+                variant="solid"
+                className="ml-2 px-4 py-2 rounded-lg w-fit"
+                onClick={showModal}
+              >
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
       </div>
+      {/* 清除對話確認窗 */}
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText={t('page.aiChat.confirm')}
+        cancelText={t('page.aiChat.cancel')}
+      >
+        <p>{t('page.aiChat.clearConversationConfirm')}</p>
+      </Modal>
     </div>
   );
 };

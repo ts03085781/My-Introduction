@@ -145,8 +145,14 @@ export default {
         aiOpeningRemarks:
           'こんにちは、ディーンのAIアシスタントです。どういうことですか？',
         clearConversation: '会話をクリア',
+        clearConversationConfirm: '現在の会話を削除してもよろしいですか？',
         browserNotSupported: 'このブラウザは音声認識をサポートしていません',
         microphoneNotAvailable: 'マイクが利用できません',
+        voiceInput: '音声入力',
+        confirm: '確認',
+        cancel: 'キャンセル',
+        deleteHistory: '会話をクリア',
+        deleteHistoryConfirm: '会話を削除しました。',
       },
     },
 
