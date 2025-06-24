@@ -110,18 +110,25 @@ const AIChat: React.FC = () => {
 
   // 語音按鈕事件
   const handleVoiceInput = () => {
+    console.log('handleVoiceInput');
     if (!browserSupportsSpeechRecognition) {
+      console.log('browserSupportsSpeechRecognition');
       alert('此瀏覽器不支援語音辨識');
       return;
     }
     if (listening) {
+      console.log('stopListening-1');
       SpeechRecognition.stopListening();
+      console.log('stopListening-2');
     } else {
+      console.log('startListening-1');
       resetTranscript();
+      console.log('startListening-2');
       SpeechRecognition.startListening({
         language: 'zh-TW',
         continuous: false,
       });
+      console.log('startListening-3');
     }
   };
 
