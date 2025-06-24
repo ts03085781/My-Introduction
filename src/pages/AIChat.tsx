@@ -8,6 +8,7 @@ import { INFORMATION_OF_DEAN } from '@/constants/aiChat';
 import { Message } from '@/types/aiChat';
 import { MessageRole } from '@/constants/enum';
 import { useQuery } from '@tanstack/react-query';
+import Typewriter from '@/components/Typewriter';
 import {
   AudioOutlined,
   AudioMutedOutlined,
@@ -193,7 +194,7 @@ const AIChat: React.FC = () => {
               return (
                 <div className="flex justify-end mb-3 pl-8" key={index}>
                   <div className="bg-white dark:bg-gray-700 border rounded-2xl px-4 py-2 inline-block">
-                    {chatMessage.content}
+                    <span>{chatMessage.content}</span>
                   </div>
                 </div>
               );
@@ -202,7 +203,11 @@ const AIChat: React.FC = () => {
               return (
                 <div className="mb-3 pr-8" key={index}>
                   <div className="bg-gray-100 dark:bg-gray-800 border rounded-2xl px-4 py-2 inline-block">
-                    {chatMessage.content}
+                    {chatMessages.length - 1 === index ? (
+                      <Typewriter text={chatMessage.content} typingSpeed={15} />
+                    ) : (
+                      <span>{chatMessage.content}</span>
+                    )}
                   </div>
                 </div>
               );
