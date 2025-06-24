@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局樣式 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+}
+
+/* 亮色模式樣式 */
+.ant-card,
+.ant-modal-content,
+.ant-select-dropdown,
+.ant-picker-dropdown,
+.ant-dropdown-menu {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+/* 暗色模式樣式 */
+.dark .ant-card,
+.dark .ant-modal-content,
+.dark .ant-select-dropdown,
+.dark .ant-picker-dropdown,
+.dark .ant-dropdown-menu {
+  background-color: #1f2937;
+  color: white;
+  border: 1px solid #374151;
+}
+
+/* .dark .ant-typography, */
+.dark .ant-card-head-title,
+.dark .ant-modal-title,
+.dark .ant-dropdown-menu-item {
+  color: white;
+}
+
+/* 響應式設計調整 */
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: absolute;
+    z-index: 100;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .ant-layout-sider-collapsed {
+    display: none;
+  }
+}
+
+/* 自定義滾動條 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 暗色模式滾動條 */
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
