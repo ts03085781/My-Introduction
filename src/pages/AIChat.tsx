@@ -8,7 +8,11 @@ import { INFORMATION_OF_DEAN } from '@/constants/aiChat';
 import { Message } from '@/types/aiChat';
 import { MessageRole } from '@/constants/enum';
 import { useQuery } from '@tanstack/react-query';
-import { AudioOutlined, AudioMutedOutlined } from '@ant-design/icons';
+import {
+  AudioOutlined,
+  AudioMutedOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -82,11 +86,15 @@ const AIChat: React.FC = () => {
   const handleSend = async () => {
     if (!userInput.trim()) return;
 
+    setChatMessages((prev) => [
+      ...prev,
+      { role: MessageRole.User, content: userInput },
+    ]);
+
     const response = await refetch();
 
-    setChatMessages([
-      ...chatMessages,
-      { role: MessageRole.User, content: userInput },
+    setChatMessages((prev) => [
+      ...prev,
       {
         role: MessageRole.Assistant,
         content: response.data.choices[0].message.content || '',
@@ -175,6 +183,13 @@ const AIChat: React.FC = () => {
               );
             }
           })}
+          {isFetching && (
+            <div className="mb-3 pr-8">
+              <div className="bg-gray-100 dark:bg-gray-800 border rounded-2xl px-4 py-2 inline-block">
+                <LoadingOutlined />
+              </div>
+            </div>
+          )}
         </div>
         {/* 輸入區 */}
         <div className="flex items-center p-3 border rounded-lg">
