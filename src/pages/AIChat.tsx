@@ -47,8 +47,13 @@ const AIChat: React.FC = () => {
 
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
+  const { isFetching, refetch } = useQuery({
+    queryKey: ['aiChat'],
+    queryFn: () => fetchAIChat(userInput),
+    enabled: false,
+  });
 
-  // 語音辨識 hook
+  // 語音辨識的 hook，用於語音辨識的結果自動填入 userInput
   const {
     transcript,
     listening,
@@ -59,7 +64,9 @@ const AIChat: React.FC = () => {
 
   // 語音辨識結果自動填入 userInput
   useEffect(() => {
+    console.log('listening', listening);
     if (listening) {
+      console.log('transcript', transcript);
       setUserInput(transcript);
     }
   }, [transcript, listening]);
@@ -77,12 +84,6 @@ const AIChat: React.FC = () => {
     }
     // eslint-disable-next-line
   }, []);
-
-  const { isFetching, refetch } = useQuery({
-    queryKey: ['aiChat'],
-    queryFn: () => fetchAIChat(userInput),
-    enabled: false,
-  });
 
   const handleSend = async () => {
     if (!userInput.trim()) return;
@@ -130,7 +131,6 @@ const AIChat: React.FC = () => {
     if (listening) {
       SpeechRecognition.stopListening();
     } else {
-      console.log('startListening', SpeechRecognition, resetTranscript);
       resetTranscript();
       SpeechRecognition.startListening({
         language: 'zh-TW',
