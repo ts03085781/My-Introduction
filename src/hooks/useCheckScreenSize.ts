@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { DeviceType } from '@/types/commonsType';
+import { DeviceType } from '@/constants/enum';
 
 const useCheckScreenSize = (): DeviceType => {
-  const [deviceType, setDeviceType] = useState<DeviceType>('Web');
+  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.Web);
 
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
-      setDeviceType(width <= 768 ? 'Mobile' : 'Web');
+      setDeviceType(width <= 768 ? DeviceType.Mobile : DeviceType.Web);
     };
 
     // 初始檢查

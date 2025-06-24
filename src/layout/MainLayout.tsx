@@ -23,18 +23,22 @@ import { DeviceType } from '@/constants/enum';
 const { Header, Sider, Content, Footer } = Layout;
 
 const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(true);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const theme = useSelector(selectTheme);
   const language = useSelector(selectLanguage);
   const deviceType = useCheckScreenSize();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
     // 當語言改變時更新i18n
     i18n.changeLanguage(language);
   }, [language, i18n]);
+
+  useEffect(() => {
+    setCollapsed(deviceType === DeviceType.Mobile ? true : false);
+  }, [deviceType]);
 
   const handleThemeChange = () => {
     dispatch(toggleTheme());
