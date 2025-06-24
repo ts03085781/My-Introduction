@@ -27,7 +27,6 @@ export default {
             title: 'シニアフロントエンドエンジニア',
             company: 'Hytech Consulting Management Sdn Bhd',
             time: '2022/09 - 2025/05',
-            websitesDeveloped: '開発・保守したウェブサイト：',
             description: {
               item_1:
                 'VueとReact技術を使用してフロントエンドとバックエンド管理システムを開発',

@@ -188,11 +188,6 @@ const Introduction = () => {
                           </li>
                         </ul>
                       </Paragraph>
-                      <Paragraph className="font-bold text-green-700 dark:text-green-600">
-                        {t(
-                          'page.introduction.experience.company_1.websitesDeveloped'
-                        )}
-                      </Paragraph>
                       <Divider />
                     </>
                   ),

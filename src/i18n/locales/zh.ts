@@ -27,7 +27,6 @@ export default {
             title: '資深前端工程師',
             company: '海科科技有限公司',
             time: '2022/09 - 2025/05',
-            websitesDeveloped: '開發與維護的網站:',
             description: {
               item_1: '使用 Vue, React 相關技術開發網站前後台系統',
               item_2: '使用Element-UI + SCSS 建構網站基礎功能與樣式',

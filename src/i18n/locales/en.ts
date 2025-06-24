@@ -29,7 +29,6 @@ export default {
             title: 'Senior Front-End Engineer Sr.',
             company: 'Hytech Consulting Management Sdn Bhd',
             time: '2022/09 - 2025/05',
-            websitesDeveloped: 'Websites Developed and Maintained:',
             description: {
               item_1:
                 'Developed front-end and back-end admin systems using Vue and React technologies',
