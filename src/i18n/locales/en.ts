@@ -157,6 +157,8 @@ export default {
         aiOpeningRemarks:
           "Hello, I am Dean's AI assistant, how can I help you?",
         clearConversation: 'Clear Conversation',
+        browserNotSupported: 'This browser does not support speech recognition',
+        microphoneNotAvailable: 'Microphone is not available',
       },
     },
 

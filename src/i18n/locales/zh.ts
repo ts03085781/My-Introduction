@@ -135,6 +135,8 @@ export default {
         placeholder: '請輸入您的訊息...',
         aiOpeningRemarks: '你好，我是Dean的AI助手，有什麼可以幫助您的嗎？',
         clearConversation: '清除對話紀錄',
+        browserNotSupported: '此瀏覽器不支援語音辨識',
+        microphoneNotAvailable: '麥克風無法使用',
       },
     },
 

@@ -64,32 +64,10 @@ const AIChat: React.FC = () => {
 
   // 語音辨識結果自動填入 userInput
   useEffect(() => {
-    console.log(
-      '🔄 useEffect 觸發 - listening:',
-      listening,
-      'transcript:',
-      transcript
-    );
     if (listening) {
-      console.log('📝 更新 userInput:', transcript);
       setUserInput(transcript);
     }
   }, [transcript, listening]);
-
-  // 監控語音辨識狀態變化
-  useEffect(() => {
-    console.log('🎯 語音辨識狀態變化:', {
-      browserSupportsSpeechRecognition,
-      isMicrophoneAvailable,
-      listening,
-      transcript,
-    });
-  }, [
-    browserSupportsSpeechRecognition,
-    isMicrophoneAvailable,
-    listening,
-    transcript,
-  ]);
 
   useEffect(() => {
     const conversationHistory = localStorage.getItem('conversationHistory');
@@ -140,42 +118,27 @@ const AIChat: React.FC = () => {
 
   // 語音按鈕事件
   const handleVoiceInput = () => {
-    console.log('=== 語音按鈕點擊 ===');
-    console.log(
-      'browserSupportsSpeechRecognition:',
-      browserSupportsSpeechRecognition
-    );
-    console.log('isMicrophoneAvailable:', isMicrophoneAvailable);
-    console.log('目前 listening 狀態:', listening);
-
     if (!browserSupportsSpeechRecognition) {
-      console.log('❌ 瀏覽器不支援語音辨識');
-      alert('此瀏覽器不支援語音辨識');
+      alert(t('page.aiChat.browserNotSupported'));
       return;
     }
 
     if (!isMicrophoneAvailable) {
-      console.log('❌ 麥克風無法使用');
-      alert('麥克風無法使用');
+      alert(t('page.aiChat.microphoneNotAvailable'));
       return;
     }
 
     if (listening) {
-      console.log('🛑 停止錄音');
       SpeechRecognition.stopListening();
     } else {
-      console.log('🎤 開始錄音');
-      console.log('重置 transcript');
       resetTranscript();
-
       try {
         SpeechRecognition.startListening({
           language: 'zh-TW',
           continuous: false,
         });
-        console.log('✅ startListening 已呼叫');
       } catch (error) {
-        console.error('❌ startListening 錯誤:', error);
+        console.error('startListening error:', error);
       }
     }
   };
@@ -189,19 +152,6 @@ const AIChat: React.FC = () => {
     <div>
       {/* 標題 */}
       <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
-
-      {/* 語音辨識狀態顯示 */}
-      <div className="mb-4 p-3 bg-gray-100 rounded-lg text-sm">
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            支援語音辨識: {browserSupportsSpeechRecognition ? '✅' : '❌'}
-          </div>
-          <div>麥克風可用: {isMicrophoneAvailable ? '✅' : '❌'}</div>
-          <div>錄音狀態: {listening ? '🔴 錄音中' : '⚪ 待機'}</div>
-          <div>辨識文字: {transcript || '無'}</div>
-        </div>
-      </div>
-
       <div className="flex flex-col h-[calc(100vh-350px)] max-w-[550px] mx-auto">
         <Button
           type="primary"

@@ -145,6 +145,8 @@ export default {
         aiOpeningRemarks:
           'こんにちは、ディーンのAIアシスタントです。どういうことですか？',
         clearConversation: '会話をクリア',
+        browserNotSupported: 'このブラウザは音声認識をサポートしていません',
+        microphoneNotAvailable: 'マイクが利用できません',
       },
     },
 
