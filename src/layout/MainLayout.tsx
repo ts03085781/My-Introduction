@@ -13,6 +13,7 @@ import {
   MoonOutlined,
   CloudOutlined,
   OpenAIOutlined,
+  MessageOutlined,
 } from '@ant-design/icons';
 import { toggleTheme, selectTheme } from '@/store/slices/themeSlice';
 import { changeLanguage, selectLanguage } from '@/store/slices/languageSlice';
@@ -83,6 +84,11 @@ const MainLayout = () => {
       key: '/AIChat',
       icon: <OpenAIOutlined />,
       label: <Link to="/AIChat">{t('sidebar.aiChat')}</Link>,
+    },
+    {
+      key: '/chatRoom',
+      icon: <MessageOutlined />,
+      label: <Link to="/chatRoom">{t('sidebar.chatRoom')}</Link>,
     },
   ];
 

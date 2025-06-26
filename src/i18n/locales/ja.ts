@@ -5,6 +5,7 @@ export default {
       portfolio: 'ポートフォリオ 1',
       skyLog: '天気予報',
       aiChat: 'AI チャット',
+      chatRoom: 'チャットルーム',
     },
 
     page: {

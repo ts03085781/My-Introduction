@@ -5,6 +5,7 @@ export default {
       portfolio: '作品集 1',
       skyLog: '氣候手札',
       aiChat: 'AI 聊天',
+      chatRoom: '聊天室',
     },
 
     page: {

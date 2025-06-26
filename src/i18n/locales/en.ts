@@ -6,6 +6,7 @@ export default {
       portfolio: 'Portfolio 1',
       skyLog: 'SkyLog',
       aiChat: 'AI Chat',
+      chatRoom: 'Chat Room',
     },
 
     // 頁面標題
