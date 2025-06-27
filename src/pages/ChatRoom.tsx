@@ -86,7 +86,7 @@ const ChatRoom: React.FC = () => {
   }, [closeSocket]);
 
   return (
-    <div className="h-full w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
+    <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
       {/* 標題 */}
       <h1 className="text-2xl font-bold">Chat Room</h1>
       <p className="text-sm text-gray-400 mt-4 mb-4">
@@ -99,7 +99,11 @@ const ChatRoom: React.FC = () => {
             {/* 訊息氣泡 */}
             {message.type === 'message' && (
               <div className="flex items-center justify-start gap-2 w-full">
-                <Avatar src="/src/assets/images/avatarImage.png" size={40}>
+                <Avatar
+                  className="bg-blue-500 text-white"
+                  src="/src/assets/images/avatarImage.png"
+                  size={50}
+                >
                   {message.sender}
                 </Avatar>
                 <div className="border border-gray-300 w-fit p-2 rounded-lg">
@@ -137,7 +141,7 @@ const ChatRoom: React.FC = () => {
           onChange={handleInputChange}
           value={message}
         />
-        <Button type="primary" onClick={handleSend} disabled={!message.trim()}>
+        <Button type="primary" onClick={handleSend}>
           Send
         </Button>
       </div>
