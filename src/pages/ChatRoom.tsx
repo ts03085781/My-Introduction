@@ -16,15 +16,13 @@ const ChatRoom: React.FC = () => {
 
   // 建立連線
   const createSocket = useCallback(() => {
-    const socket = new WebSocket(
-      `ws://localhost:8080?sender=${encodeURIComponent(senderName)}`
-    );
+    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}`;
+    const socket = new WebSocket(url);
     socketRef.current = socket;
     socketRef.current.onopen = () => console.log('已連線');
     socketRef.current.onerror = (err) => console.error('錯誤', err);
     socketRef.current.onclose = () => console.log('連線關閉');
     socketRef.current.onmessage = (event) => {
-      console.log(event.data);
       const data = JSON.parse(event.data);
       setChatRoomMessages((prev) => [...prev, data]);
       setOnlineUsers(data.onlineUsers);
