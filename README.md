@@ -1,6 +1,7 @@
 # 個人網站
 
 本專案為使用 React、TypeScript 與 Vite 建置的個人網站。它具備熱模組替換（HMR）功能以提供快速的開發體驗，並包含基礎的 ESLint 設定。
+目前正式環境部署在 Vercel 線上雲端平台：`https://vercel.com/`
 
 ## 核心技術
 
@@ -55,14 +56,6 @@ npm run build
 ```
 
 建置成果將儲存於 `dist/` 目錄中。
-
-### 程式碼檢查
-
-若要檢查程式碼是否有語法錯誤：
-
-```sh
-npm run lint
-```
 
 ## 可用的腳本
 
