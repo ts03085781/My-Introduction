@@ -28,24 +28,6 @@ const Portfolio1 = () => {
       github: 'https://github.com',
       demo: 'https://example.com',
     },
-    {
-      id: 3,
-      title: 'Project 3',
-      image: 'https://via.placeholder.com/600x400',
-      description: 'A mobile app developed with React Native.',
-      tags: ['React Native', 'TypeScript', 'Firebase'],
-      github: 'https://github.com',
-      demo: 'https://example.com',
-    },
-    {
-      id: 4,
-      title: 'Project 4',
-      image: 'https://via.placeholder.com/600x400',
-      description: 'A dashboard application with data visualization.',
-      tags: ['React', 'D3.js', 'Ant Design', 'GraphQL'],
-      github: 'https://github.com',
-      demo: 'https://example.com',
-    },
   ];
 
   return (
