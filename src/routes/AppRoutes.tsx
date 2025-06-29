@@ -9,6 +9,7 @@ const NotFound = lazy(() => import('@/pages/NotFound'));
 const SkyLog = lazy(() => import('@/pages/SkyLog'));
 const AIChat = lazy(() => import('@/pages/AIChat'));
 const ChatRoom = lazy(() => import('@/pages/ChatRoom'));
+const RestaurantFinder = lazy(() => import('@/pages/RestaurantFinder'));
 
 export const AppRoutes = () => (
   <Suspense
@@ -27,6 +28,7 @@ export const AppRoutes = () => (
         <Route path="/skyLog" element={<SkyLog />} />
         <Route path="/AIChat" element={<AIChat />} />
         <Route path="/chatRoom" element={<ChatRoom />} />
+        <Route path="/restaurantFinder" element={<RestaurantFinder />} />
 
         {/* 404 頁面 */}
         <Route path="*" element={<NotFound />} />
