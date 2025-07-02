@@ -15,6 +15,7 @@ const ChatRoom: React.FC = () => {
   const [onlineUsers, setOnlineUsers] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const [chatRoomMessages, setChatRoomMessages] = useState<
     OnMessageInterface[]
   >([]);
@@ -45,6 +46,7 @@ const ChatRoom: React.FC = () => {
     socketRef.current.onerror = (err) => {
       setIsConnected(false);
       setIsLoading(false);
+      setUserId(null); // 清空用戶 ID
       Message.error(`錯誤: ${err}`);
     };
 
@@ -61,35 +63,65 @@ const ChatRoom: React.FC = () => {
       setOnlineUsers(0);
       setIsConnected(false);
       setIsLoading(false);
+      setUserId(null); // 清空用戶 ID
       Message.warning('聊天室連線關閉');
     };
 
     // 接收廣播訊息事件
     socketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setChatRoomMessages((prev) => [...prev, data]);
-      setOnlineUsers(data.onlineUsers);
+
+      // 根據訊息類型進行相應處理
+      switch (data.type) {
+        case 'userId':
+          // 設定當前用戶的唯一識別碼
+          if (data.id) {
+            setUserId(data.id);
+          }
+          break;
+
+        case 'message':
+        case 'join':
+        case 'close':
+          // 將聊天相關訊息加入聊天記錄
+          setChatRoomMessages((prevMessages) => [...prevMessages, data]);
+
+          // 同步更新在線人數
+          if (data.onlineUsers !== undefined) {
+            setOnlineUsers(data.onlineUsers);
+          }
+          break;
+
+        default:
+          // 忽略未定義的訊息類型
+          break;
+      }
     };
   }, [senderName]);
 
-  // 發送訊息函式
-  const sendSocket = (data: string) => {
-    if (socketRef.current?.readyState === WebSocket.OPEN) {
-      socketRef.current.send(data);
+  // 發送訊息到聊天室
+  const sendSocket = (messageContent: string) => {
+    const isConnected = socketRef.current?.readyState === WebSocket.OPEN;
+
+    if (isConnected && socketRef.current) {
+      socketRef.current.send(messageContent);
     } else {
-      Message.error('尚未連線1');
+      Message.error('尚未連線至聊天室');
     }
   };
 
-  // 關閉連線
+  // 主動關閉 WebSocket 連線
   const closeSocket = () => {
     socketRef.current?.close();
   };
 
+  // 處理發送訊息的事件
   const handleSend = () => {
-    if (message.trim()) {
-      setMessage('');
-      sendSocket(message);
+    const trimmedMessage = message.trim();
+
+    if (trimmedMessage) {
+      setMessage(''); // 清空輸入框
+      sendSocket(trimmedMessage);
     }
   };
 
@@ -152,17 +184,27 @@ const ChatRoom: React.FC = () => {
           <div className="flex justify-center rounded-lg" key={index}>
             {/* 訊息氣泡 */}
             {message.type === 'message' && (
-              <div className="flex items-center justify-start gap-2 w-full">
+              <div
+                className={`flex items-center justify-start gap-2 w-full${
+                  message.id === userId ? ' flex-row-reverse' : ''
+                }`}
+              >
                 <Avatar
-                  className="bg-blue-500 text-white"
+                  className={` text-white ${
+                    message.id === userId ? 'bg-green-500' : 'bg-gray-400'
+                  }`}
                   src="/src/assets/images/avatarImage.png"
                   size={50}
                 >
                   {message.sender}
                 </Avatar>
-                <div className="border border-gray-300 w-fit p-2 rounded-lg">
-                  <p>{message.message}</p>
-                  <p className="text-xs text-gray-400">
+                <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px]">
+                  <span>{message.message}</span>
+                  <p
+                    className={`text-xs text-gray-400 ${
+                      message.id === userId ? 'text-right' : 'text-left'
+                    }`}
+                  >
                     {new Date(message.timestamp).toLocaleTimeString()}
                   </p>
                 </div>
