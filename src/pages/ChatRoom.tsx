@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Input, Button, Avatar, message as Message, Tooltip } from 'antd';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { OnMessageInterface } from '../types/chatRoom';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
 import {
   SendOutlined,
   DisconnectOutlined,
   LinkOutlined,
+  AudioMutedOutlined,
+  AudioOutlined,
 } from '@ant-design/icons';
 
 const ChatRoom: React.FC = () => {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
   const [message, setMessage] = useState('');
   const [senderName, setSenderName] = useState('');
   const [onlineUsers, setOnlineUsers] = useState(0);
@@ -21,6 +26,15 @@ const ChatRoom: React.FC = () => {
   >([]);
   const socketRef = useRef<WebSocket | null>(null);
   const chatRoomMessagesRef = useRef<HTMLDivElement>(null);
+
+  // 語音辨識的 hook，用於語音辨識的結果自動填入 userInput
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    isMicrophoneAvailable,
+  } = useSpeechRecognition();
 
   // 建立連線
   const createSocket = useCallback(() => {
@@ -125,6 +139,37 @@ const ChatRoom: React.FC = () => {
     }
   };
 
+  // 語音按鈕事件
+  const handleVoiceInput = () => {
+    // 檢查瀏覽器是否支援語音辨識
+    if (!browserSupportsSpeechRecognition) {
+      alert(t('page.aiChat.browserNotSupported'));
+      return;
+    }
+
+    // 檢查麥克風是否可用
+    if (!isMicrophoneAvailable) {
+      alert(t('page.aiChat.microphoneNotAvailable'));
+      return;
+    }
+
+    // 檢查是否正在聆聽
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      // 開始聆聽
+      resetTranscript();
+      try {
+        SpeechRecognition.startListening({
+          language: 'zh-TW',
+          continuous: false,
+        });
+      } catch (error) {
+        console.error('startListening error:', error);
+      }
+    }
+  };
+
   // 組件卸載時關閉連線
   useEffect(() => {
     return () => {
@@ -139,6 +184,13 @@ const ChatRoom: React.FC = () => {
       container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
     }
   }, [chatRoomMessages]);
+
+  // 語音辨識結果自動填入 message
+  useEffect(() => {
+    if (listening) {
+      setMessage(transcript);
+    }
+  }, [transcript, listening]);
 
   return (
     <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4 relative">
@@ -239,6 +291,18 @@ const ChatRoom: React.FC = () => {
           disabled={!isConnected}
           onPressEnter={handleSend}
         />
+        {/* 語音輸入 */}
+        <Tooltip title={t('page.aiChat.voiceInput')}>
+          <Button
+            type={listening ? 'default' : 'dashed'}
+            className="px-4 py-2 rounded-lg font-bold"
+            onClick={handleVoiceInput}
+            disabled={!isConnected}
+          >
+            {listening ? <AudioMutedOutlined /> : <AudioOutlined />}
+          </Button>
+        </Tooltip>
+        {/* 發送按鈕 */}
         <Tooltip title="送出訊息">
           <Button type="primary" onClick={handleSend} disabled={!isConnected}>
             <SendOutlined />
