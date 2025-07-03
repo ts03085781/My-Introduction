@@ -7,15 +7,15 @@ const msg = {
   to: 'ts03085781@gmail.com',
   from: 'ts03085781@gmail.com',
   subject: `🚨 github ${process.env.GITHUB_REPOSITORY} 專案中的 Main 分支有新的 push！`,
-  text: `
-有人對 Main 分支做了 push。
-
-專案名稱：${process.env.GITHUB_REPOSITORY}
-提交者：${process.env.GITHUB_ACTOR}
-提交時間：${new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}
-提交 SHA：${process.env.GITHUB_SHA}
-查看變更：https://github.com/${process.env.GITHUB_REPOSITORY}/commit/${process.env.GITHUB_SHA}
-  `,
+  // text: `
+  //   有人對 Main 分支做了 push。
+    
+  //   專案名稱：${process.env.GITHUB_REPOSITORY}
+  //   提交者：${process.env.GITHUB_ACTOR}
+  //   提交時間：${new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}
+  //   提交 SHA：${process.env.GITHUB_SHA}
+  //   查看變更：https://github.com/${process.env.GITHUB_REPOSITORY}/commit/${process.env.GITHUB_SHA}
+  // `,
   html: `
     <h2>🚨 GitHub 專案更新通知</h2>
     <p>有人對 Main 分支做了 push。</p>
