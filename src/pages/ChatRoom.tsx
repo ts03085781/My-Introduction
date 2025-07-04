@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Input, Button, Avatar, message as Message, Tooltip } from 'antd';
+import {
+  Input,
+  Button,
+  Avatar,
+  message as Message,
+  Tooltip,
+  ColorPicker,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import { OnMessageInterface } from '../types/chatRoom';
 import SpeechRecognition, {
@@ -21,6 +28,7 @@ const ChatRoom: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [color, setColor] = useState('#1677ff');
   const [chatRoomMessages, setChatRoomMessages] = useState<
     OnMessageInterface[]
   >([]);
@@ -44,7 +52,7 @@ const ChatRoom: React.FC = () => {
     }
 
     setIsLoading(true);
-    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}`;
+    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}?color=${encodeURIComponent(color)}`;
     const socket = new WebSocket(url);
 
     socketRef.current = socket;
@@ -111,7 +119,7 @@ const ChatRoom: React.FC = () => {
           break;
       }
     };
-  }, [senderName]);
+  }, [senderName, color]);
 
   // 發送訊息到聊天室
   const sendSocket = (messageContent: string) => {
@@ -206,6 +214,13 @@ const ChatRoom: React.FC = () => {
           value={senderName}
           disabled={isConnected}
         />
+        <Tooltip title="頭像底色">
+          <ColorPicker
+            value={color}
+            onChange={(value) => setColor(value.toHexString())}
+            disabled={isConnected}
+          />
+        </Tooltip>
         <Tooltip title="連線至聊天室">
           <Button
             color="primary"
@@ -242,13 +257,12 @@ const ChatRoom: React.FC = () => {
                 }`}
               >
                 <Avatar
-                  className={` text-white ${
-                    message.id === userId ? 'bg-green-500' : 'bg-gray-400'
-                  }`}
+                  className="text-white"
                   src="/src/assets/images/avatarImage.png"
                   size={50}
+                  style={{ backgroundColor: message.color }}
                 >
-                  {message.sender}
+                  {message.sender.slice(0, 1)}
                 </Avatar>
                 <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px]">
                   <span>{message.message}</span>

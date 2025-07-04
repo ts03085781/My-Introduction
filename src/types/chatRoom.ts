@@ -5,4 +5,5 @@ export interface OnMessageInterface {
   sender: string;
   message?: string;
   timestamp: string;
+  color?: string;
 }
