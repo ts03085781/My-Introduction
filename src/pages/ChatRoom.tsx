@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { OnMessageInterface } from '../types/chatRoom';
+
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
+
 import {
   Input,
   Button,
@@ -7,11 +14,7 @@ import {
   Tooltip,
   ColorPicker,
 } from 'antd';
-import { useTranslation } from 'react-i18next';
-import { OnMessageInterface } from '../types/chatRoom';
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from 'react-speech-recognition';
+
 import {
   SendOutlined,
   DisconnectOutlined,
@@ -29,12 +32,12 @@ const ChatRoom: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [color, setColor] = useState('#1677ff');
+  const [isComposing, setIsComposing] = useState(false);
   const [chatRoomMessages, setChatRoomMessages] = useState<
     OnMessageInterface[]
   >([]);
   const socketRef = useRef<WebSocket | null>(null);
   const chatRoomMessagesRef = useRef<HTMLDivElement>(null);
-  const [isComposing, setIsComposing] = useState(false);
 
   // 語音辨識的 hook，用於語音辨識的結果自動填入 userInput
   const {
@@ -58,23 +61,34 @@ const ChatRoom: React.FC = () => {
 
     socketRef.current = socket;
 
-    // 連線成功事件
-    socketRef.current.onopen = () => {
+    setSocketOnOpen(socket);
+    setSocketOnError(socket);
+    setSocketOnClose(socket);
+    setSocketOnMessage(socket);
+  }, [senderName, color]);
+
+  // 連線成功事件
+  const setSocketOnOpen = (socket: WebSocket) => {
+    socket.onopen = () => {
       setIsConnected(true);
       setIsLoading(false);
       Message.success('已連線');
     };
+  };
 
-    // 連線錯誤事件
-    socketRef.current.onerror = (err) => {
+  // 連線錯誤事件
+  const setSocketOnError = (socket: WebSocket) => {
+    socket.onerror = (err) => {
       setIsConnected(false);
       setIsLoading(false);
       setUserId(null); // 清空用戶 ID
       Message.error(`錯誤: ${err}`);
     };
+  };
 
-    // 關閉連線事件
-    socketRef.current.onclose = () => {
+  // 關閉連線事件
+  const setSocketOnClose = (socket: WebSocket) => {
+    socket.onclose = () => {
       setChatRoomMessages((prev) => [
         ...prev,
         {
@@ -89,43 +103,32 @@ const ChatRoom: React.FC = () => {
       setUserId(null); // 清空用戶 ID
       Message.warning('聊天室連線關閉');
     };
+  };
 
-    // 接收廣播訊息事件
-    socketRef.current.onmessage = (event) => {
+  // 接收廣播訊息事件
+  const setSocketOnMessage = (socket: WebSocket) => {
+    socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      // 根據訊息類型進行相應處理
-      switch (data.type) {
-        case 'userId':
-          // 設定當前用戶的唯一識別碼
-          if (data.id) {
-            setUserId(data.id);
-          }
-          break;
+      // 設定當前用戶的唯一識別碼
+      if (data.type === 'userId') {
+        setUserId(data.id);
+        return;
+      }
 
-        case 'message':
-        case 'join':
-        case 'close':
-          // 將聊天相關訊息加入聊天記錄
-          setChatRoomMessages((prevMessages) => [...prevMessages, data]);
+      // 將聊天相關訊息加入聊天記錄
+      setChatRoomMessages((pre) => [...pre, data]);
 
-          // 同步更新在線人數
-          if (data.onlineUsers !== undefined) {
-            setOnlineUsers(data.onlineUsers);
-          }
-          break;
-
-        default:
-          // 忽略未定義的訊息類型
-          break;
+      // 同步更新在線人數
+      if (data.onlineUsers) {
+        setOnlineUsers(data.onlineUsers);
       }
     };
-  }, [senderName, color]);
+  };
 
   // 發送訊息到聊天室
   const sendSocket = (messageContent: string) => {
     const isConnected = socketRef.current?.readyState === WebSocket.OPEN;
-
     if (isConnected && socketRef.current) {
       socketRef.current.send(messageContent);
     } else {
@@ -206,7 +209,7 @@ const ChatRoom: React.FC = () => {
       {/* 標題 */}
       <h1 className="text-2xl font-bold">Chat Room</h1>
       <p className="text-sm text-gray-400 mt-4 mb-4">
-        目前有 {onlineUsers} 人在線
+        {isConnected ? `目前有 ${onlineUsers} 人在線上` : '尚未連線'}
       </p>
       <div className="flex gap-2 w-full mt-4 mb-4">
         <Input
