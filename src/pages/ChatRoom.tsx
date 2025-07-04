@@ -21,6 +21,7 @@ import {
   LinkOutlined,
   AudioMutedOutlined,
   AudioOutlined,
+  ArrowDownOutlined,
 } from '@ant-design/icons';
 
 const ChatRoom: React.FC = () => {
@@ -33,6 +34,7 @@ const ChatRoom: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [color, setColor] = useState('#1677ff');
   const [isComposing, setIsComposing] = useState(false);
+  const [isShowScrollToBottom, setIsShowScrollToBottom] = useState(false);
   const [chatRoomMessages, setChatRoomMessages] = useState<
     OnMessageInterface[]
   >([]);
@@ -182,6 +184,19 @@ const ChatRoom: React.FC = () => {
     }
   };
 
+  // 捲動到最下方
+  const scrollToBottom = () => {
+    const container = chatRoomMessagesRef.current;
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollToBottomButton = () => {
+    scrollToBottom();
+    setIsShowScrollToBottom(false);
+  };
+
   // 組件卸載時關閉連線
   useEffect(() => {
     return () => {
@@ -192,10 +207,25 @@ const ChatRoom: React.FC = () => {
   // 偵測有新訊息時自動捲動到最下方
   useEffect(() => {
     const container = chatRoomMessagesRef.current;
+    const lastMessage = chatRoomMessages[chatRoomMessages.length - 1];
+    const isLastMessageFromSelf = lastMessage?.id === userId;
+
     if (container) {
-      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+      // 檢查用戶是否在距離底部65px以內
+      const isNearBottom =
+        container.scrollHeight -
+          (container.scrollTop + container.clientHeight) <=
+        65;
+
+      // 只有當用戶接近底部時才自動捲動或是當用戶是發送者時才自動捲動
+      if (isNearBottom || isLastMessageFromSelf) {
+        scrollToBottom();
+        setIsShowScrollToBottom(false);
+      } else {
+        setIsShowScrollToBottom(true);
+      }
     }
-  }, [chatRoomMessages]);
+  }, [chatRoomMessages, userId]);
 
   // 語音辨識結果自動填入 message
   useEffect(() => {
@@ -205,9 +235,14 @@ const ChatRoom: React.FC = () => {
   }, [transcript, listening]);
 
   return (
-    <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4 relative">
+    <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
       {/* 標題 */}
-      <h1 className="text-2xl font-bold">Chat Room</h1>
+      <div className="flex justify-between items-top">
+        <h1 className="text-2xl font-bold">Chat Room</h1>
+        <div className="text-sm text-gray-600">
+          連線狀態: {isConnected ? '連線中' : '未連線'}
+        </div>
+      </div>
       <p className="text-sm text-gray-400 mt-4 mb-4">
         {isConnected ? `目前有 ${onlineUsers} 人在線上` : '尚未連線'}
       </p>
@@ -246,61 +281,74 @@ const ChatRoom: React.FC = () => {
           </Button>
         </Tooltip>
       </div>
-      <div
-        className="flex flex-col h-[calc(100vh-435px)] overflow-y-auto border border-gray-300 rounded-lg p-2 gap-2"
-        ref={chatRoomMessagesRef}
-      >
-        {/* 聊天室訊息 */}
-        {chatRoomMessages.map((message, index) => (
-          <div className="flex justify-center rounded-lg" key={index}>
-            {/* 訊息氣泡 */}
-            {message.type === 'message' && (
-              <div
-                className={`flex items-center justify-start gap-2 w-full${
-                  message.id === userId ? ' flex-row-reverse' : ''
-                }`}
-              >
-                <Avatar
-                  className="text-white"
-                  src="/src/assets/images/avatarImage.png"
-                  size={50}
-                  style={{ backgroundColor: message.color }}
+      <div className="relative">
+        <div
+          className="flex flex-col h-[calc(100vh-435px)] overflow-y-auto border border-gray-300 rounded-lg p-2 gap-2"
+          ref={chatRoomMessagesRef}
+        >
+          {/* 聊天室訊息 */}
+          {chatRoomMessages.map((message, index) => (
+            <div className="flex justify-center rounded-lg" key={index}>
+              {/* 訊息氣泡 */}
+              {message.type === 'message' && (
+                <div
+                  className={`flex items-center justify-start gap-2 w-full${
+                    message.id === userId ? ' flex-row-reverse' : ''
+                  }`}
                 >
-                  {message.sender.slice(0, 1)}
-                </Avatar>
-                <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px]">
-                  <span>{message.message}</span>
-                  <p
-                    className={`text-xs text-gray-400 ${
-                      message.id === userId ? 'text-right' : 'text-left'
-                    }`}
+                  <Avatar
+                    className="text-white"
+                    src="/src/assets/images/avatarImage.png"
+                    size={50}
+                    style={{ backgroundColor: message.color }}
                   >
-                    {new Date(message.timestamp).toLocaleTimeString()}
-                  </p>
+                    {message.sender.slice(0, 1)}
+                  </Avatar>
+                  <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px]">
+                    <span>{message.message}</span>
+                    <p
+                      className={`text-xs text-gray-400 ${
+                        message.id === userId ? 'text-right' : 'text-left'
+                      }`}
+                    >
+                      {new Date(message.timestamp).toLocaleTimeString()}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-            {/* 加入聊天室 */}
-            {message.type === 'join' && (
-              <div
-                className="flex justify-center rounded-lg p-2 bg-green-100"
-                key={index}
-              >
-                <p>{message.sender} 加入聊天室</p>
-              </div>
-            )}
-            {/* 離開聊天室 */}
-            {message.type === 'close' && (
-              <div
-                className="flex justify-center rounded-lg p-2 bg-gray-100"
-                key={index}
-              >
-                <p>{message.sender} 離開聊天室</p>
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+              {/* 加入聊天室 */}
+              {message.type === 'join' && (
+                <div
+                  className="flex justify-center rounded-lg p-2 bg-green-100"
+                  key={index}
+                >
+                  <p>{message.sender} 加入聊天室</p>
+                </div>
+              )}
+              {/* 離開聊天室 */}
+              {message.type === 'close' && (
+                <div
+                  className="flex justify-center rounded-lg p-2 bg-gray-100"
+                  key={index}
+                >
+                  <p>{message.sender} 離開聊天室</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* 捲動到最下方的按鈕 */}
+        {isShowScrollToBottom && (
+          <Button
+            className="absolute bottom-4 right-1/2 translate-x-1/2 text-gray-500 hover:text-gray-700"
+            onClick={handleScrollToBottomButton}
+          >
+            最新訊息
+            <ArrowDownOutlined />
+          </Button>
+        )}
       </div>
+
       <div className="flex items-center justify-center gap-2 w-full mt-4">
         <Input
           placeholder="Please enter your message..."
@@ -330,9 +378,6 @@ const ChatRoom: React.FC = () => {
             <SendOutlined />
           </Button>
         </Tooltip>
-      </div>
-      <div className="absolute top-4 right-5 text-sm text-gray-600">
-        連線狀態: {isConnected ? '連線中' : '未連線'}
       </div>
     </div>
   );
