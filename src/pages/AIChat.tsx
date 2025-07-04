@@ -56,6 +56,7 @@ const AIChat: React.FC = () => {
     queryFn: () => fetchAIChat(userInput),
     enabled: false,
   });
+  const [isComposing, setIsComposing] = useState(false);
 
   const openNotification = () => {
     notification.open({
@@ -230,7 +231,11 @@ const AIChat: React.FC = () => {
             onChange={(e) => setUserInput(e.target.value)}
             disabled={isFetching}
             variant="borderless"
-            // onPressEnter={handleSend}
+            onPressEnter={() => {
+              if (!isComposing) handleSend();
+            }}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
           />
           <div className="flex items-center p-2 w-full justify-end">
             {/* 語音輸入 */}
