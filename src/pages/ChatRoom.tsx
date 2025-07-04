@@ -34,6 +34,7 @@ const ChatRoom: React.FC = () => {
   >([]);
   const socketRef = useRef<WebSocket | null>(null);
   const chatRoomMessagesRef = useRef<HTMLDivElement>(null);
+  const [isComposing, setIsComposing] = useState(false);
 
   // 語音辨識的 hook，用於語音辨識的結果自動填入 userInput
   const {
@@ -52,7 +53,7 @@ const ChatRoom: React.FC = () => {
     }
 
     setIsLoading(true);
-    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}?color=${encodeURIComponent(color)}`;
+    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}&color=${encodeURIComponent(color)}`;
     const socket = new WebSocket(url);
 
     socketRef.current = socket;
@@ -303,7 +304,11 @@ const ChatRoom: React.FC = () => {
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           disabled={!isConnected}
-          onPressEnter={handleSend}
+          onPressEnter={() => {
+            if (!isComposing) handleSend();
+          }}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
         />
         {/* 語音輸入 */}
         <Tooltip title={t('page.aiChat.voiceInput')}>
