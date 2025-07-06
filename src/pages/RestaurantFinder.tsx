@@ -110,8 +110,8 @@ const RestaurantFinder = () => {
     <div className="h-full">
       {/* 左側控制與結果面板 */}
       <Card className="mb-4">
-        <h2 className="text-xl font-bold mb-4">餐廳搜尋器</h2>
-        <div className="flex gap-4 items-end">
+        <h2 className="text-xl font-bold mb-2">餐廳搜尋器</h2>
+        <div className="flex gap-4 items-end flex-wrap">
           <div>
             <label className="block">搜尋範圍</label>
             <Input
@@ -162,32 +162,30 @@ const RestaurantFinder = () => {
       </Card>
 
       {/* 地圖 */}
-      {currentLocation && (
-        <div className="flex gap-4 h-full w-full border rounded-lg overflow-hidden">
-          {/* 餐廳列表 (使用公開屬性) */}
-          <div className=" overflow-y-auto max-h-[calc(100vh-300px)] p-4">
-            {restaurants.length > 0 &&
-              restaurants.map((place) => (
-                <div
-                  key={place.id}
-                  className="p-4 mb-2 bg-white rounded-lg border border-gray-300"
-                >
-                  <h3 className="text-lg font-semibold">{place.displayName}</h3>
-                  <p className="text-sm text-gray-600">
-                    評分: {place.rating} ⭐
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {place.formattedAddress}
-                  </p>
-                </div>
-              ))}
-            {restaurants.length === 0 && (
-              <span className=" text-red-500">找不到符合條件的餐廳。</span>
-            )}
-          </div>
+      <div className="flex gap-4 w-full border rounded-lg h-[calc(100vh-300px)] overflow-hidden">
+        {/* 左側餐廳列表 */}
+        <div className=" overflow-y-auto p-4">
+          {restaurants.length > 0 &&
+            restaurants.map((place) => (
+              <div
+                key={place.id}
+                className="p-4 mb-2 bg-white rounded-lg border border-gray-300"
+              >
+                <h3 className="text-lg font-semibold">{place.displayName}</h3>
+                <p className="text-sm text-gray-600">評分: {place.rating} ⭐</p>
+                <p className="text-sm text-gray-500">
+                  {place.formattedAddress}
+                </p>
+              </div>
+            ))}
+          {restaurants.length === 0 && (
+            <span className=" text-red-500">找不到符合條件的餐廳。</span>
+          )}
+        </div>
 
-          {/* 右側地圖面板 (使用公開屬性) */}
-          <div className="w-full h-full overflow-hidden">
+        {/* 右側地圖面板 */}
+        <div className="w-full">
+          {currentLocation && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
               center={currentLocation}
@@ -228,9 +226,9 @@ const RestaurantFinder = () => {
                 />
               ))}
             </GoogleMap>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
