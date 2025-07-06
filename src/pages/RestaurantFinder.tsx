@@ -115,10 +115,11 @@ const RestaurantFinder = () => {
           <div>
             <label className="block">搜尋範圍</label>
             <Input
-              className="w-[160px] mt-1"
+              className="w-[130px] mt-1"
               type="number"
               size="middle"
-              min={0}
+              min={100}
+              max={3000}
               addonAfter="公尺"
               value={searchRadius}
               onChange={(e) => setSearchRadius(Number(e.target.value))}
@@ -127,7 +128,7 @@ const RestaurantFinder = () => {
           <div>
             <label className="block">最低星星數</label>
             <Select
-              className="w-[160px] mt-1"
+              className="w-[130px] mt-1"
               size="middle"
               value={minRating}
               onChange={(value) => setMinRating(value)}
@@ -142,6 +143,9 @@ const RestaurantFinder = () => {
             <label className="block text-sm font-medium text-gray-700">
               您目前的座標
             </label>
+            {/* <p className="text-sm text-gray-400 pt-[6px] pb-[6px]">
+              {`緯度:${currentLocation?.lat.toFixed(5)}, 經度:${currentLocation?.lng.toFixed(5)}`}
+            </p> */}
             <Input
               className="w-[225px] mt-1"
               size="middle"
@@ -162,9 +166,9 @@ const RestaurantFinder = () => {
       </Card>
 
       {/* 地圖 */}
-      <div className="flex gap-4 w-full border rounded-lg h-[calc(100vh-300px)] overflow-hidden">
+      <div className="flex w-full border rounded-lg h-[calc(100vh-382px)]">
         {/* 左側餐廳列表 */}
-        <div className=" overflow-y-auto p-4">
+        <div className=" overflow-y-auto p-4 w-[460px]">
           {restaurants.length > 0 &&
             restaurants.map((place) => (
               <div
@@ -179,12 +183,14 @@ const RestaurantFinder = () => {
               </div>
             ))}
           {restaurants.length === 0 && (
-            <span className=" text-red-500">找不到符合條件的餐廳。</span>
+            <p className=" text-red-500 text-center text-lg">
+              找不到符合條件的餐廳。
+            </p>
           )}
         </div>
 
         {/* 右側地圖面板 */}
-        <div className="w-full">
+        <div className="w-full rounded-lg overflow-hidden">
           {currentLocation && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}

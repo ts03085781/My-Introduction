@@ -182,8 +182,8 @@ const AIChat: React.FC = () => {
   return (
     <div>
       {/* 標題 */}
-      <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
       <div className="flex flex-col h-[calc(100vh-280px)] max-w-[650px] mx-auto">
+        <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
         {/* 對話訊息顯示區 */}
         <div
           className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4"
