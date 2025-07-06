@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, Marker, Circle } from '@react-google-maps/api';
-import { Card, Input, Select } from 'antd';
+import { Button, Card, Input, Select } from 'antd';
 import marker from '@/assets/images/marker.png';
+import { SearchOutlined } from '@ant-design/icons';
 
 // 地圖容器的樣式
 const mapContainerStyle = {
@@ -28,7 +29,6 @@ const RestaurantFinder = () => {
   const [minRating, setMinRating] = useState(4); // 預設最低星星數 4
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   // 當元件載入時，取得使用者位置
   useEffect(() => {
@@ -41,13 +41,11 @@ const RestaurantFinder = () => {
           });
           setLoading(false);
         },
-        (err) => {
-          setError(`無法取得位置: ${err.message}`);
+        () => {
           setLoading(false);
         }
       );
     } else {
-      setError('您的瀏覽器不支援地理位置功能。');
       setLoading(false);
     }
   }, []);
@@ -57,7 +55,6 @@ const RestaurantFinder = () => {
     if (!currentLocation) return;
     setLoading(true);
     setRestaurants([]);
-    setError(null);
 
     try {
       const request = {
@@ -75,6 +72,7 @@ const RestaurantFinder = () => {
       const filteredPlaces = places.filter(
         (p) => p.rating && p.rating >= minRating
       );
+
       if (filteredPlaces.length > 0) {
         // 建立我們自己的乾淨物件陣列
         const results = filteredPlaces.map((p) => ({
@@ -90,11 +88,10 @@ const RestaurantFinder = () => {
 
         setRestaurants(sortedResults);
       } else {
-        setError('找不到符合條件的餐廳。');
+        setRestaurants([]);
       }
     } catch (e) {
       console.error(e);
-      setError('搜尋時發生錯誤。');
     } finally {
       setLoading(false);
     }
@@ -104,9 +101,7 @@ const RestaurantFinder = () => {
   if (loading && !currentLocation) {
     return <div className="p-8">正在取得您的位置...</div>;
   }
-  if (error) {
-    return <div className="p-8 text-red-500">{error}</div>;
-  }
+
   if (!currentLocation) {
     return <div className="p-8">無法顯示地圖，因為沒有位置資訊。</div>;
   }
@@ -115,8 +110,8 @@ const RestaurantFinder = () => {
     <div className="h-full">
       {/* 左側控制與結果面板 */}
       <Card className="mb-4">
-        <h2 className="text-xl font-bold mb-4">尋找附近餐廳</h2>
-        <div className="flex gap-4">
+        <h2 className="text-xl font-bold mb-4">餐廳搜尋器</h2>
+        <div className="flex gap-4 items-end">
           <div>
             <label className="block">搜尋範圍</label>
             <Input
@@ -147,28 +142,32 @@ const RestaurantFinder = () => {
             <label className="block text-sm font-medium text-gray-700">
               您目前的座標
             </label>
-            <div className="mt-1 p-2 bg-gray-200 rounded-md text-sm">
-              緯度: {currentLocation?.lat.toFixed(5)}, 經度:{' '}
-              {currentLocation?.lng.toFixed(5)}
-            </div>
+            <Input
+              className="w-[225px] mt-1"
+              size="middle"
+              value={`緯度:${currentLocation?.lat.toFixed(5)}, 經度:${currentLocation?.lng.toFixed(5)}`}
+              readOnly
+            />
           </div>
-          <button
+          <Button
+            size="middle"
+            className="text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+            type="primary"
             onClick={handleSearch}
             disabled={loading}
-            className=" bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
           >
-            {loading ? '搜尋中...' : '搜尋'}
-          </button>
+            <SearchOutlined />
+          </Button>
         </div>
       </Card>
 
       {/* 地圖 */}
       {currentLocation && (
-        <div className="flex gap-4 h-full w-full">
+        <div className="flex gap-4 h-full w-full border rounded-lg overflow-hidden">
           {/* 餐廳列表 (使用公開屬性) */}
-          {restaurants.length > 0 && (
-            <div className=" overflow-y-auto max-h-[calc(100vh-300px)] p-4">
-              {restaurants.map((place) => (
+          <div className=" overflow-y-auto max-h-[calc(100vh-300px)] p-4">
+            {restaurants.length > 0 &&
+              restaurants.map((place) => (
                 <div
                   key={place.id}
                   className="p-4 mb-2 bg-white rounded-lg border border-gray-300"
@@ -182,11 +181,13 @@ const RestaurantFinder = () => {
                   </p>
                 </div>
               ))}
-            </div>
-          )}
+            {restaurants.length === 0 && (
+              <span className=" text-red-500">找不到符合條件的餐廳。</span>
+            )}
+          </div>
 
           {/* 右側地圖面板 (使用公開屬性) */}
-          <div className="w-full h-full">
+          <div className="w-full h-full overflow-hidden">
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
               center={currentLocation}
