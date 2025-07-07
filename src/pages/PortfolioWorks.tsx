@@ -16,8 +16,7 @@ const PortfolioWorks = () => {
       id: 1,
       title: 'My-Introduction',
       image: myIntroduction,
-      description:
-        '使用 Vite 建立的個人介紹網站，技術架構基於 React + TypeScript。專案支援 多語系切換（react-i18next）、路由管理（react-router）、伺服器資料快取與同步管理（react-query），搭配 Tailwind CSS 建構響應式介面設計，並整合 Ant Design 元件庫提升開發效率。開發流程中導入 Storybook 進行元件開發與測試，使用 Vitest 執行單元測試，確保元件穩定性。代碼品質方面，結合 ESLint 與 Prettier 實施靜態檢查與自動格式化，並透過 Husky + lint-staged 與 Commitlint + Commitizen 建立 Git 提交流程規範，強化團隊協作與版本控制品質。',
+      description: t('page.portfolio.project_1.description'),
       tags: [
         'React',
         'TypeScript',
@@ -46,8 +45,7 @@ const PortfolioWorks = () => {
       id: 2,
       title: 'webSocket-server',
       image: webSocketServer,
-      description:
-        '由node.js建立的WebSocket伺服器專案,專門給My-Introduction專案使用者連線使用,並且使用WebSocket實現即時通訊功能',
+      description: t('page.portfolio.project_2.description'),
       tags: ['Node.js', 'WebSocket'],
       github: 'https://github.com/ts03085781/webSocket-server',
     },
@@ -56,10 +54,7 @@ const PortfolioWorks = () => {
   return (
     <div className="max-w-6xl mx-auto">
       <Title level={1}>{t('page.portfolio.title')}</Title>
-      <Paragraph className="mb-8">
-        Here are some of my recent projects. Click on each project to view the
-        github.
-      </Paragraph>
+      <Paragraph className="mb-8">{t('page.portfolio.description')}</Paragraph>
 
       <Row gutter={[24, 24]}>
         {portfolioItems.map((item) => (

@@ -102,6 +102,15 @@ export default {
       },
       portfolio: {
         title: '作品集',
+        description: '這裡有一些我最近的作品。點擊每個作品以查看 GitHub。',
+        project_1: {
+          description:
+            '使用 Vite 建立的個人作品集介紹網站，技術架構基於 React + TypeScript。專案支援 多語系切換（react-i18next）、路由管理（react-router）、伺服器資料快取與同步管理（react-query），搭配 Tailwind CSS 建構響應式介面設計，並整合 Ant Design 元件庫提升開發效率。開發流程中導入 Storybook 進行元件開發與測試，使用 Vitest 執行單元測試，確保元件穩定性。代碼品質方面，結合 ESLint 與 Prettier 實施靜態檢查與自動格式化，並透過 Husky + lint-staged 與 Commitlint + Commitizen 建立 Git 提交流程規範，強化團隊協作與版本控制品質。',
+        },
+        project_2: {
+          description:
+            '由node.js建立的WebSocket伺服器專案,採取前後端分離的架構模式,專門給My-Introduction專案中的聊天室連線使用,並且使用WebSocket實現即時通訊功能',
+        },
       },
       skyLog: {
         search: '搜尋',

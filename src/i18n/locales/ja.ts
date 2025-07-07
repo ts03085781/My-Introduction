@@ -111,6 +111,16 @@ export default {
       },
       portfolio: {
         title: 'ポートフォリオ作品',
+        description:
+          'ここには、最近のプロジェクトの一部を示します。各プロジェクトをクリックして、GitHubを表示します。',
+        project_1: {
+          description:
+            'Viteを使用して構築された個人作品集紹介ウェブサイト。技術的な構造はReact + TypeScriptを基にしています。多言語切換（react-i18next）、ルーティング管理（react-router）、サーバーサイドデータのキャッシュと同期管理（react-query）、Tailwind CSSを使用してレスポンシブデザインを実現し、Ant Designコンポーネントライブラリを統合して開発効率を向上させています。開発プロセスでは、Storybookを導入してコンポーネントの開発とテストを行い、Vitestを使用して単体テストを実施し、コンポーネントの安定性を確保しています。コード品質面では、ESLintとPrettierを組み合わせて静的検査と自動フォーマットを実施し、Husky + lint-stagedとCommitlint + Commitizenを導入してGitのフローを規範化し、チーム間の協業とバージョン管理の品質を向上させています。',
+        },
+        project_2: {
+          description:
+            'Node.jsを使用して構築されたWebSocketサーバープロジェクト。前後端分離のアーキテクチャを採用し、My-Introductionプロジェクトのチャットルーム接続に特化しています。WebSocketを使用してリアルタイム通信機能を実現しています。',
+        },
       },
       skyLog: {
         search: '検索',

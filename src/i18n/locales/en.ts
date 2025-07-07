@@ -123,6 +123,16 @@ export default {
       },
       portfolio: {
         title: 'Portfolio Works',
+        description:
+          'Here are some of my recent projects. Click on each project to view the github.',
+        project_1: {
+          description:
+            'A personal portfolio website built with Vite, based on React + TypeScript. Supports multi-language switching (react-i18next), routing management (react-router), server-side data caching and synchronization management (react-query), responsive design built with Tailwind CSS, and integration of Ant Design component library to improve development efficiency. Introduced Storybook for component development and testing, used Vitest for unit testing to ensure component stability. In terms of code quality, combined ESLint and Prettier for static analysis and automatic formatting, and introduced Husky + lint-staged and Commitlint + Commitizen to establish Git flow specifications, improving team collaboration and version control quality.',
+        },
+        project_2: {
+          description:
+            'A WebSocket server project built with Node.js, adopting a front-end and back-end separation architecture, specializing in connecting to the chat room in the My-Introduction project using WebSocket to implement real-time communication functionality.',
+        },
       },
       skyLog: {
         search: 'Search',
