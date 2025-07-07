@@ -100,6 +100,19 @@ const MainLayout = () => {
     },
   ];
 
+  const returnLanguageName = () => {
+    switch (language) {
+      case 'en':
+        return 'English';
+      case 'zh':
+        return '繁體中文';
+      case 'ja':
+        return '日本語';
+      default:
+        return 'English';
+    }
+  };
+
   return (
     <Layout className="min-h-screen bg-white text-gray-800 dark:bg-gray-900 dark:text-white">
       <Header className="sticky top-0 z-50 p-0 flex items-center justify-between bg-blue-500 dark:bg-gray-800">
@@ -123,7 +136,7 @@ const MainLayout = () => {
               icon={<GlobalOutlined />}
               className="text-white"
             >
-              {language === 'en' ? 'English' : '繁體中文'}
+              {returnLanguageName()}
             </Button>
           </Dropdown>
         </div>
