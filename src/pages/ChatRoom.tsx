@@ -53,7 +53,7 @@ const ChatRoom: React.FC = () => {
   // 建立連線
   const createSocket = useCallback(() => {
     if (!senderName.trim()) {
-      Message.warning('Please enter your name');
+      Message.warning(t('page.restaurantFinder.pleaseEnterYourName'));
       return;
     }
 
@@ -74,7 +74,7 @@ const ChatRoom: React.FC = () => {
     socket.onopen = () => {
       setIsConnected(true);
       setIsLoading(false);
-      Message.success('已連線');
+      Message.success(t('page.restaurantFinder.connected'));
     };
   };
 
@@ -84,7 +84,7 @@ const ChatRoom: React.FC = () => {
       setIsConnected(false);
       setIsLoading(false);
       setUserId(null); // 清空用戶 ID
-      Message.error(`錯誤: ${err}`);
+      Message.error(t('page.restaurantFinder.error') + err);
     };
   };
 
@@ -103,7 +103,7 @@ const ChatRoom: React.FC = () => {
       setIsConnected(false);
       setIsLoading(false);
       setUserId(null); // 清空用戶 ID
-      Message.warning('聊天室連線關閉');
+      Message.warning(t('page.restaurantFinder.chatRoomClosed'));
     };
   };
 
@@ -134,7 +134,7 @@ const ChatRoom: React.FC = () => {
     if (isConnected && socketRef.current) {
       socketRef.current.send(messageContent);
     } else {
-      Message.error('尚未連線至聊天室');
+      Message.error(t('page.restaurantFinder.chatRoomNotConnected'));
     }
   };
 
@@ -157,13 +157,13 @@ const ChatRoom: React.FC = () => {
   const handleVoiceInput = () => {
     // 檢查瀏覽器是否支援語音辨識
     if (!browserSupportsSpeechRecognition) {
-      alert(t('page.aiChat.browserNotSupported'));
+      alert(t('page.restaurantFinder.browserNotSupported'));
       return;
     }
 
     // 檢查麥克風是否可用
     if (!isMicrophoneAvailable) {
-      alert(t('page.aiChat.microphoneNotAvailable'));
+      alert(t('page.restaurantFinder.microphoneNotAvailable'));
       return;
     }
 
@@ -238,29 +238,40 @@ const ChatRoom: React.FC = () => {
     <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
       {/* 標題 */}
       <div className="flex justify-between items-top">
-        <h1 className="text-2xl font-bold">Chat Room</h1>
+        <h1 className="text-2xl font-bold">
+          {t('page.restaurantFinder.title')}
+        </h1>
         <div className="text-sm text-gray-600">
-          連線狀態: {isConnected ? '連線中' : '未連線'}
+          {`${t('page.restaurantFinder.connectionStatus')} : 
+          ${
+            isConnected
+              ? t('page.restaurantFinder.connected')
+              : t('page.restaurantFinder.disconnected')
+          }`}
         </div>
       </div>
       <p className="text-sm text-gray-400 mt-4 mb-4">
-        {isConnected ? `目前有 ${onlineUsers} 人在線上` : '尚未連線'}
+        {isConnected
+          ? t('page.restaurantFinder.onlineUsers', {
+              onlineUsers,
+            })
+          : t('page.restaurantFinder.disconnected')}
       </p>
       <div className="flex gap-2 w-full mt-4 mb-4">
         <Input
-          placeholder="Please enter your name..."
+          placeholder={t('page.restaurantFinder.pleaseEnterYourName')}
           onChange={(e) => setSenderName(e.target.value)}
           value={senderName}
           disabled={isConnected}
         />
-        <Tooltip title="頭像底色">
+        <Tooltip title={t('page.restaurantFinder.avatarColor')}>
           <ColorPicker
             value={color}
             onChange={(value) => setColor(value.toHexString())}
             disabled={isConnected}
           />
         </Tooltip>
-        <Tooltip title="連線至聊天室">
+        <Tooltip title={t('page.restaurantFinder.connectToChatRoom')}>
           <Button
             color="primary"
             variant="solid"
@@ -270,7 +281,7 @@ const ChatRoom: React.FC = () => {
             <LinkOutlined />
           </Button>
         </Tooltip>
-        <Tooltip title="關閉連線">
+        <Tooltip title={t('page.restaurantFinder.closeConnection')}>
           <Button
             color="danger"
             variant="solid"
@@ -322,7 +333,9 @@ const ChatRoom: React.FC = () => {
                   className="flex justify-center rounded-lg p-2 bg-green-100"
                   key={index}
                 >
-                  <p>{message.sender} 加入聊天室</p>
+                  <p>
+                    {message.sender} {t('page.restaurantFinder.joinChatRoom')}
+                  </p>
                 </div>
               )}
               {/* 離開聊天室 */}
@@ -331,7 +344,9 @@ const ChatRoom: React.FC = () => {
                   className="flex justify-center rounded-lg p-2 bg-gray-100"
                   key={index}
                 >
-                  <p>{message.sender} 離開聊天室</p>
+                  <p>
+                    {message.sender} {t('page.restaurantFinder.leaveChatRoom')}
+                  </p>
                 </div>
               )}
             </div>
@@ -343,7 +358,7 @@ const ChatRoom: React.FC = () => {
             className="absolute bottom-4 right-1/2 translate-x-1/2 text-gray-500 hover:text-gray-700"
             onClick={handleScrollToBottomButton}
           >
-            最新訊息
+            {t('page.restaurantFinder.latestMessage')}
             <ArrowDownOutlined />
           </Button>
         )}
@@ -351,7 +366,7 @@ const ChatRoom: React.FC = () => {
 
       <div className="flex items-center justify-center gap-2 w-full mt-4">
         <Input
-          placeholder="Please enter your message..."
+          placeholder={t('page.restaurantFinder.pleaseEnterYourMessage')}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           disabled={!isConnected}
@@ -373,7 +388,7 @@ const ChatRoom: React.FC = () => {
           </Button>
         </Tooltip>
         {/* 發送按鈕 */}
-        <Tooltip title="送出訊息">
+        <Tooltip title={t('page.restaurantFinder.sendMessage')}>
           <Button type="primary" onClick={handleSend} disabled={!isConnected}>
             <SendOutlined />
           </Button>
