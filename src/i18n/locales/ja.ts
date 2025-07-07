@@ -2,7 +2,7 @@ export default {
   translation: {
     sidebar: {
       introduction: '自己紹介',
-      portfolio: 'ポートフォリオ 1',
+      portfolio: 'ポートフォリオ作品',
       skyLog: '天気予報',
       aiChat: 'AI チャット',
       chatRoom: 'チャットルーム',

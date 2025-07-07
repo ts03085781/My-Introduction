@@ -2,7 +2,7 @@ export default {
   translation: {
     sidebar: {
       introduction: '簡介',
-      portfolio: '作品集 1',
+      portfolio: '作品集',
       skyLog: '氣候手札',
       aiChat: 'AI 聊天',
       chatRoom: '聊天室',
@@ -101,7 +101,7 @@ export default {
         },
       },
       portfolio: {
-        title: '作品展示',
+        title: '作品集',
       },
       skyLog: {
         search: '搜尋',

@@ -72,9 +72,9 @@ const MainLayout = () => {
       label: <Link to="/introduction">{t('sidebar.introduction')}</Link>,
     },
     {
-      key: '/portfolio1',
+      key: '/portfolioWorks',
       icon: <AppstoreOutlined />,
-      label: <Link to="/portfolio1">{t('sidebar.portfolio')}</Link>,
+      label: <Link to="/portfolioWorks">{t('sidebar.portfolio')}</Link>,
     },
     {
       key: '/skyLog',

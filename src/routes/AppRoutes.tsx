@@ -4,7 +4,7 @@ import MainLayout from '../layout/MainLayout';
 
 // 延遲加載頁面
 const Introduction = lazy(() => import('@/pages/Introduction'));
-const Portfolio1 = lazy(() => import('@/pages/Portfolio1'));
+const PortfolioWorks = lazy(() => import('@/pages/PortfolioWorks'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const SkyLog = lazy(() => import('@/pages/SkyLog'));
 const AIChat = lazy(() => import('@/pages/AIChat'));
@@ -24,7 +24,7 @@ export const AppRoutes = () => (
         {/* 主要路由 */}
         <Route path="/" element={<Introduction />} />
         <Route path="/introduction" element={<Introduction />} />
-        <Route path="/portfolio1" element={<Portfolio1 />} />
+        <Route path="/portfolioWorks" element={<PortfolioWorks />} />
         <Route path="/skyLog" element={<SkyLog />} />
         <Route path="/AIChat" element={<AIChat />} />
         <Route path="/chatRoom" element={<ChatRoom />} />

@@ -3,7 +3,7 @@ export default {
     // 导航
     sidebar: {
       introduction: 'Introduction',
-      portfolio: 'Portfolio 1',
+      portfolio: 'Portfolio Works',
       skyLog: 'SkyLog',
       aiChat: 'AI Chat',
       chatRoom: 'Chat Room',

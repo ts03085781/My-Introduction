@@ -5,7 +5,6 @@ export interface PortfolioItem {
   description: string;
   tags: string[];
   github: string;
-  demo: string;
 }
 
 export type PortfolioItems = PortfolioItem[];
