@@ -53,7 +53,7 @@ const ChatRoom: React.FC = () => {
   // 建立連線
   const createSocket = useCallback(() => {
     if (!senderName.trim()) {
-      Message.warning(t('page.restaurantFinder.pleaseEnterYourName'));
+      Message.warning(t('page.chatRoom.pleaseEnterYourName'));
       return;
     }
 
@@ -74,7 +74,7 @@ const ChatRoom: React.FC = () => {
     socket.onopen = () => {
       setIsConnected(true);
       setIsLoading(false);
-      Message.success(t('page.restaurantFinder.connected'));
+      Message.success(t('page.chatRoom.connected'));
     };
   };
 
@@ -84,7 +84,7 @@ const ChatRoom: React.FC = () => {
       setIsConnected(false);
       setIsLoading(false);
       setUserId(null); // 清空用戶 ID
-      Message.error(t('page.restaurantFinder.error') + err);
+      Message.error(t('page.chatRoom.error') + err);
     };
   };
 
@@ -103,7 +103,7 @@ const ChatRoom: React.FC = () => {
       setIsConnected(false);
       setIsLoading(false);
       setUserId(null); // 清空用戶 ID
-      Message.warning(t('page.restaurantFinder.chatRoomClosed'));
+      Message.warning(t('page.chatRoom.chatRoomClosed'));
     };
   };
 
@@ -134,7 +134,7 @@ const ChatRoom: React.FC = () => {
     if (isConnected && socketRef.current) {
       socketRef.current.send(messageContent);
     } else {
-      Message.error(t('page.restaurantFinder.chatRoomNotConnected'));
+      Message.error(t('page.chatRoom.chatRoomNotConnected'));
     }
   };
 
@@ -157,13 +157,13 @@ const ChatRoom: React.FC = () => {
   const handleVoiceInput = () => {
     // 檢查瀏覽器是否支援語音辨識
     if (!browserSupportsSpeechRecognition) {
-      alert(t('page.restaurantFinder.browserNotSupported'));
+      alert(t('page.chatRoom.browserNotSupported'));
       return;
     }
 
     // 檢查麥克風是否可用
     if (!isMicrophoneAvailable) {
-      alert(t('page.restaurantFinder.microphoneNotAvailable'));
+      alert(t('page.chatRoom.microphoneNotAvailable'));
       return;
     }
 
@@ -238,40 +238,38 @@ const ChatRoom: React.FC = () => {
     <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
       {/* 標題 */}
       <div className="flex justify-between items-top">
-        <h1 className="text-2xl font-bold">
-          {t('page.restaurantFinder.title')}
-        </h1>
+        <h1 className="text-2xl font-bold">{t('page.chatRoom.title')}</h1>
         <div className="text-sm text-gray-600">
-          {`${t('page.restaurantFinder.connectionStatus')} : 
+          {`${t('page.chatRoom.connectionStatus')} : 
           ${
             isConnected
-              ? t('page.restaurantFinder.connected')
-              : t('page.restaurantFinder.disconnected')
+              ? t('page.chatRoom.connected')
+              : t('page.chatRoom.disconnected')
           }`}
         </div>
       </div>
       <p className="text-sm text-gray-400 mt-4 mb-4">
         {isConnected
-          ? t('page.restaurantFinder.onlineUsers', {
+          ? t('page.chatRoom.onlineUsers', {
               onlineUsers,
             })
-          : t('page.restaurantFinder.disconnected')}
+          : t('page.chatRoom.disconnected')}
       </p>
       <div className="flex gap-2 w-full mt-4 mb-4">
         <Input
-          placeholder={t('page.restaurantFinder.pleaseEnterYourName')}
+          placeholder={t('page.chatRoom.pleaseEnterYourName')}
           onChange={(e) => setSenderName(e.target.value)}
           value={senderName}
           disabled={isConnected}
         />
-        <Tooltip title={t('page.restaurantFinder.avatarColor')}>
+        <Tooltip title={t('page.chatRoom.avatarColor')}>
           <ColorPicker
             value={color}
             onChange={(value) => setColor(value.toHexString())}
             disabled={isConnected}
           />
         </Tooltip>
-        <Tooltip title={t('page.restaurantFinder.connectToChatRoom')}>
+        <Tooltip title={t('page.chatRoom.connectToChatRoom')}>
           <Button
             color="primary"
             variant="solid"
@@ -281,7 +279,7 @@ const ChatRoom: React.FC = () => {
             <LinkOutlined />
           </Button>
         </Tooltip>
-        <Tooltip title={t('page.restaurantFinder.closeConnection')}>
+        <Tooltip title={t('page.chatRoom.closeConnection')}>
           <Button
             color="danger"
             variant="solid"
@@ -334,7 +332,7 @@ const ChatRoom: React.FC = () => {
                   key={index}
                 >
                   <p>
-                    {message.sender} {t('page.restaurantFinder.joinChatRoom')}
+                    {message.sender} {t('page.chatRoom.joinChatRoom')}
                   </p>
                 </div>
               )}
@@ -345,7 +343,7 @@ const ChatRoom: React.FC = () => {
                   key={index}
                 >
                   <p>
-                    {message.sender} {t('page.restaurantFinder.leaveChatRoom')}
+                    {message.sender} {t('page.chatRoom.leaveChatRoom')}
                   </p>
                 </div>
               )}
@@ -358,7 +356,7 @@ const ChatRoom: React.FC = () => {
             className="absolute bottom-4 right-1/2 translate-x-1/2 text-gray-500 hover:text-gray-700"
             onClick={handleScrollToBottomButton}
           >
-            {t('page.restaurantFinder.latestMessage')}
+            {t('page.chatRoom.latestMessage')}
             <ArrowDownOutlined />
           </Button>
         )}
@@ -366,7 +364,7 @@ const ChatRoom: React.FC = () => {
 
       <div className="flex items-center justify-center gap-2 w-full mt-4">
         <Input
-          placeholder={t('page.restaurantFinder.pleaseEnterYourMessage')}
+          placeholder={t('page.chatRoom.pleaseEnterYourMessage')}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           disabled={!isConnected}
@@ -388,7 +386,7 @@ const ChatRoom: React.FC = () => {
           </Button>
         </Tooltip>
         {/* 發送按鈕 */}
-        <Tooltip title={t('page.restaurantFinder.sendMessage')}>
+        <Tooltip title={t('page.chatRoom.sendMessage')}>
           <Button type="primary" onClick={handleSend} disabled={!isConnected}>
             <SendOutlined />
           </Button>

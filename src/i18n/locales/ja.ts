@@ -165,7 +165,7 @@ export default {
         deleteHistory: '会話をクリア',
         deleteHistoryConfirm: '会話を削除しました。',
       },
-      restaurantFinder: {
+      chatRoom: {
         title: 'チャットルーム',
         connectionStatus: '接続状態',
         connected: '接続中',

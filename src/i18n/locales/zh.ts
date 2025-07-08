@@ -154,7 +154,7 @@ export default {
         deleteHistory: '刪除歷史對話紀錄',
         deleteHistoryConfirm: '您已經成功刪除了歷史對話紀錄',
       },
-      restaurantFinder: {
+      chatRoom: {
         title: '聊天室',
         connectionStatus: '連線狀態',
         connected: '連線中',

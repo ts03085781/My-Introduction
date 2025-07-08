@@ -178,7 +178,7 @@ export default {
         deleteHistory: 'Delete History',
         deleteHistoryConfirm: 'You have successfully deleted the history.',
       },
-      restaurantFinder: {
+      chatRoom: {
         title: 'Chat Room',
         connectionStatus: 'Connection Status',
         connected: 'Connected',
