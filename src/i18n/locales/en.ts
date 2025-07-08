@@ -7,6 +7,7 @@ export default {
       skyLog: 'SkyLog',
       aiChat: 'AI Chat',
       chatRoom: 'Chat Room',
+      restaurantFinder: 'Restaurant Finder',
     },
 
     // 頁面標題
@@ -195,6 +196,17 @@ export default {
         pleaseEnterYourName: 'Please enter your name',
         pleaseEnterYourMessage: 'Please enter your message',
         avatarColor: 'Avatar Color',
+      },
+      restaurantFinder: {
+        title: 'Restaurant Finder',
+        searchRadius: 'Search Radius',
+        noRestaurantFound: 'No restaurant found',
+        yourLocation: 'Your Location',
+        minRating: 'Minimum Rating',
+        currentLocation: 'Current Location',
+        latitude: 'Latitude',
+        longitude: 'Longitude',
+        searchRadiusUnit: 'm',
       },
     },
 

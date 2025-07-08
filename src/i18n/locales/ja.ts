@@ -6,6 +6,7 @@ export default {
       skyLog: '天気予報',
       aiChat: 'AI チャット',
       chatRoom: 'チャットルーム',
+      restaurantFinder: 'レストラン検索',
     },
 
     page: {
@@ -182,6 +183,17 @@ export default {
         pleaseEnterYourName: '名前を入力してください',
         pleaseEnterYourMessage: 'メッセージを入力してください',
         avatarColor: 'アバターの色',
+      },
+      restaurantFinder: {
+        title: 'レストラン検索',
+        searchRadius: '検索半径',
+        noRestaurantFound: 'レストランが見つかりません',
+        yourLocation: 'あなたの位置',
+        minRating: '最低評価',
+        currentLocation: '現在の位置',
+        latitude: '緯度',
+        longitude: '経度',
+        searchRadiusUnit: 'メートル',
       },
     },
 

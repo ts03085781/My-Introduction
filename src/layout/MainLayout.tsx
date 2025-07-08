@@ -14,7 +14,7 @@ import {
   CloudOutlined,
   OpenAIOutlined,
   MessageOutlined,
-  RestOutlined,
+  CoffeeOutlined,
 } from '@ant-design/icons';
 import { toggleTheme, selectTheme } from '@/store/slices/themeSlice';
 import { changeLanguage, selectLanguage } from '@/store/slices/languageSlice';
@@ -93,7 +93,7 @@ const MainLayout = () => {
     },
     {
       key: '/restaurantFinder',
-      icon: <RestOutlined />,
+      icon: <CoffeeOutlined />,
       label: (
         <Link to="/restaurantFinder">{t('sidebar.restaurantFinder')}</Link>
       ),

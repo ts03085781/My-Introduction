@@ -6,6 +6,7 @@ export default {
       skyLog: '氣候手札',
       aiChat: 'AI 聊天',
       chatRoom: '聊天室',
+      restaurantFinder: '餐廳搜尋',
     },
 
     page: {
@@ -171,6 +172,17 @@ export default {
         pleaseEnterYourName: '請輸入您的名字',
         pleaseEnterYourMessage: '請輸入您的訊息',
         avatarColor: '頭像底色',
+      },
+      restaurantFinder: {
+        title: '餐廳搜尋',
+        searchRadius: '搜尋半徑',
+        noRestaurantFound: '找不到餐廳',
+        yourLocation: '您的位置',
+        minRating: '最低評分',
+        currentLocation: '目前位置',
+        latitude: '緯度',
+        longitude: '經度',
+        searchRadiusUnit: '公尺',
       },
     },
 

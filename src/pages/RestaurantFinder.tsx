@@ -3,6 +3,7 @@ import { GoogleMap, Marker, Circle } from '@react-google-maps/api';
 import { Button, Card, Input, Select } from 'antd';
 import marker from '@/assets/images/marker.png';
 import { SearchOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 // 地圖容器的樣式
 const mapContainerStyle = {
@@ -20,7 +21,7 @@ interface Restaurant {
 }
 
 const RestaurantFinder = () => {
-  // 狀態管理
+  const { t } = useTranslation();
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
@@ -110,23 +111,29 @@ const RestaurantFinder = () => {
     <div className="h-full">
       {/* 左側控制與結果面板 */}
       <Card className="mb-4">
-        <h2 className="text-xl font-bold mb-2">餐廳搜尋器</h2>
+        <h2 className="text-xl font-bold mb-2">
+          {t('page.restaurantFinder.title')}
+        </h2>
         <div className="flex gap-4 items-end flex-wrap">
           <div>
-            <label className="block">搜尋範圍</label>
+            <label className="block">
+              {t('page.restaurantFinder.searchRadius')}
+            </label>
             <Input
               className="w-[130px] mt-1"
               type="number"
               size="middle"
               min={100}
               max={3000}
-              addonAfter="公尺"
+              addonAfter={t('page.restaurantFinder.searchRadiusUnit')}
               value={searchRadius}
               onChange={(e) => setSearchRadius(Number(e.target.value))}
             />
           </div>
           <div>
-            <label className="block">最低星星數</label>
+            <label className="block">
+              {t('page.restaurantFinder.minRating')}
+            </label>
             <Select
               className="w-[130px] mt-1"
               size="middle"
@@ -141,15 +148,12 @@ const RestaurantFinder = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              您目前的座標
+              {t('page.restaurantFinder.currentLocation')}
             </label>
-            {/* <p className="text-sm text-gray-400 pt-[6px] pb-[6px]">
-              {`緯度:${currentLocation?.lat.toFixed(5)}, 經度:${currentLocation?.lng.toFixed(5)}`}
-            </p> */}
             <Input
               className="w-[225px] mt-1"
               size="middle"
-              value={`緯度:${currentLocation?.lat.toFixed(5)}, 經度:${currentLocation?.lng.toFixed(5)}`}
+              value={`${t('page.restaurantFinder.latitude')}:${currentLocation?.lat.toFixed(5)}, ${t('page.restaurantFinder.longitude')}:${currentLocation?.lng.toFixed(5)}`}
               readOnly
             />
           </div>
@@ -176,7 +180,9 @@ const RestaurantFinder = () => {
                 className="p-4 mb-2 bg-white rounded-lg border border-gray-300"
               >
                 <h3 className="text-lg font-semibold">{place.displayName}</h3>
-                <p className="text-sm text-gray-600">評分: {place.rating} ⭐</p>
+                <p className="text-sm text-gray-600">
+                  {t('page.restaurantFinder.rating')}: {place.rating} ⭐
+                </p>
                 <p className="text-sm text-gray-500">
                   {place.formattedAddress}
                 </p>
@@ -184,7 +190,7 @@ const RestaurantFinder = () => {
             ))}
           {restaurants.length === 0 && (
             <p className=" text-red-500 text-center text-lg">
-              找不到符合條件的餐廳。
+              {t('page.restaurantFinder.noRestaurantFound')}
             </p>
           )}
         </div>
@@ -198,7 +204,10 @@ const RestaurantFinder = () => {
               zoom={15}
             >
               {/* 使用者位置標記 */}
-              <Marker position={currentLocation} title="您的位置" />
+              <Marker
+                position={currentLocation}
+                title={t('page.restaurantFinder.yourLocation')}
+              />
 
               {/* 搜尋範圍圓圈 */}
               <Circle
