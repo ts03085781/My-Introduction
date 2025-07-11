@@ -186,7 +186,7 @@ const AIChat: React.FC = () => {
         <h1 className="text-2xl font-bold mb-4">{t('page.aiChat.title')}</h1>
         {/* 對話訊息顯示區 */}
         <div
-          className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4"
+          className="flex-1 p-4 overflow-y-auto border rounded-lg mb-4 dark:bg-[#1f2937] dark:border-none"
           ref={messagesContainerRef}
         >
           {/* 這裡未來會放訊息氣泡 */}
@@ -194,7 +194,7 @@ const AIChat: React.FC = () => {
             if (chatMessage.role === MessageRole.User) {
               return (
                 <div className="flex justify-end mb-3 pl-8" key={index}>
-                  <div className="bg-white dark:bg-gray-700 border rounded-2xl px-4 py-2 inline-block">
+                  <div className="bg-white dark:bg-gray-700 border rounded-2xl px-4 py-2 inline-block dark:border-none">
                     <span>{chatMessage.content}</span>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ const AIChat: React.FC = () => {
             if (chatMessage.role === MessageRole.Assistant) {
               return (
                 <div className="mb-3 pr-8" key={index}>
-                  <div className="bg-gray-100 dark:bg-gray-800 border rounded-2xl px-4 py-2 inline-block">
+                  <div className="bg-gray-100 dark:bg-gray-800 border rounded-2xl px-4 py-2 inline-block dark:bg-[#111827] dark:border-none">
                     {chatMessages.length - 1 === index ? (
                       <Typewriter text={chatMessage.content} typingSpeed={15} />
                     ) : (
@@ -223,7 +223,7 @@ const AIChat: React.FC = () => {
           )}
         </div>
         {/* 輸入區 */}
-        <div className="flex items-center rounded-lg flex-col justify-between border">
+        <div className="flex items-center rounded-lg flex-col justify-between border dark:bg-[#1f2937] dark:border-none">
           <Input.TextArea
             autoSize={{ minRows: 1, maxRows: 5 }}
             placeholder={t('page.aiChat.placeholder')}

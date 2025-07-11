@@ -171,7 +171,7 @@ export default {
         connectionStatus: '接続状態',
         connected: '接続中',
         disconnected: '未接続',
-        onlineUsers: '現在 {onlineUsers} 人がオンラインです',
+        onlineUsers: '現在 {{onlineUsers}} 人がオンラインです',
         chatRoomClosed: 'チャットルームが閉じられました',
         chatRoomNotConnected: 'チャットルームに接続されていません',
         connectToChatRoom: 'チャットルームに接続',

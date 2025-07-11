@@ -160,7 +160,7 @@ export default {
         connectionStatus: '連線狀態',
         connected: '連線中',
         disconnected: '未連線',
-        onlineUsers: '目前有 {onlineUsers} 人在線上',
+        onlineUsers: '目前有 {{onlineUsers}} 人在線上',
         chatRoomClosed: '聊天室已關閉',
         chatRoomNotConnected: '尚未連線至聊天室',
         connectToChatRoom: '連線至聊天室',

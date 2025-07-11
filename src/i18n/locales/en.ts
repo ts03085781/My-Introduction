@@ -184,7 +184,7 @@ export default {
         connectionStatus: 'Connection Status',
         connected: 'Connected',
         disconnected: 'Disconnected',
-        onlineUsers: 'Currently {onlineUsers} users online',
+        onlineUsers: 'Currently {{onlineUsers}} users online',
         chatRoomClosed: 'Chat room closed',
         chatRoomNotConnected: 'Not connected to chat room',
         connectToChatRoom: 'Connect to chat room',

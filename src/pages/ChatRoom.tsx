@@ -24,17 +24,20 @@ import {
   ArrowDownOutlined,
 } from '@ant-design/icons';
 
+const websocketServerUrl = import.meta.env.VITE_WEBSOCKET_SERVER_URL;
+
 const ChatRoom: React.FC = () => {
   const { t } = useTranslation();
-  const [message, setMessage] = useState('');
-  const [senderName, setSenderName] = useState('');
-  const [onlineUsers, setOnlineUsers] = useState(0);
-  const [isConnected, setIsConnected] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<string>('');
+  const [senderName, setSenderName] = useState<string>('');
+  const [onlineUsers, setOnlineUsers] = useState<number>(0);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [color, setColor] = useState('#1677ff');
-  const [isComposing, setIsComposing] = useState(false);
-  const [isShowScrollToBottom, setIsShowScrollToBottom] = useState(false);
+  const [color, setColor] = useState<string>('#1677ff');
+  const [isComposing, setIsComposing] = useState<boolean>(false);
+  const [isShowScrollToBottom, setIsShowScrollToBottom] =
+    useState<boolean>(false);
   const [chatRoomMessages, setChatRoomMessages] = useState<
     OnMessageInterface[]
   >([]);
@@ -58,7 +61,7 @@ const ChatRoom: React.FC = () => {
     }
 
     setIsLoading(true);
-    const url = `wss://websocket-server-production-8650.up.railway.app?sender=${encodeURIComponent(senderName)}&color=${encodeURIComponent(color)}`;
+    const url = `${websocketServerUrl}?sender=${encodeURIComponent(senderName)}&color=${encodeURIComponent(color)}`;
     const socket = new WebSocket(url);
 
     socketRef.current = socket;
@@ -235,11 +238,11 @@ const ChatRoom: React.FC = () => {
   }, [transcript, listening]);
 
   return (
-    <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4">
+    <div className="h-full max-w-[650px] mx-auto border border-gray-300 rounded-lg p-4 dark:bg-[#1f2937] dark:border-none">
       {/* 標題 */}
       <div className="flex justify-between items-top">
         <h1 className="text-2xl font-bold">{t('page.chatRoom.title')}</h1>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           {`${t('page.chatRoom.connectionStatus')} : 
           ${
             isConnected
@@ -248,13 +251,15 @@ const ChatRoom: React.FC = () => {
           }`}
         </div>
       </div>
-      <p className="text-sm text-gray-400 mt-4 mb-4">
+      {/* 在線人數 */}
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 mb-4">
         {isConnected
           ? t('page.chatRoom.onlineUsers', {
               onlineUsers,
             })
           : t('page.chatRoom.disconnected')}
       </p>
+      {/* 連線按鈕區域 */}
       <div className="flex gap-2 w-full mt-4 mb-4">
         <Input
           placeholder={t('page.chatRoom.pleaseEnterYourName')}
@@ -290,9 +295,10 @@ const ChatRoom: React.FC = () => {
           </Button>
         </Tooltip>
       </div>
+      {/* 聊天室 */}
       <div className="relative">
         <div
-          className="flex flex-col h-[calc(100vh-435px)] overflow-y-auto border border-gray-300 rounded-lg p-2 gap-2"
+          className="flex flex-col h-[calc(100vh-435px)] overflow-y-auto border border-gray-300 rounded-lg p-2 gap-2 dark:border-[#374151]"
           ref={chatRoomMessagesRef}
         >
           {/* 聊天室訊息 */}
@@ -313,7 +319,7 @@ const ChatRoom: React.FC = () => {
                   >
                     {message.sender.slice(0, 1)}
                   </Avatar>
-                  <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px]">
+                  <div className="border border-gray-300 w-fit p-2 rounded-lg max-w-[300px] dark:bg-[#374151] dark:border-none">
                     <span>{message.message}</span>
                     <p
                       className={`text-xs text-gray-400 ${
@@ -328,7 +334,7 @@ const ChatRoom: React.FC = () => {
               {/* 加入聊天室 */}
               {message.type === 'join' && (
                 <div
-                  className="flex justify-center rounded-lg p-2 bg-green-100"
+                  className="flex justify-center rounded-lg p-2 bg-green-100 dark:bg-green-900"
                   key={index}
                 >
                   <p>
@@ -339,7 +345,7 @@ const ChatRoom: React.FC = () => {
               {/* 離開聊天室 */}
               {message.type === 'close' && (
                 <div
-                  className="flex justify-center rounded-lg p-2 bg-gray-100"
+                  className="flex justify-center rounded-lg p-2 bg-gray-100 dark:bg-gray-900"
                   key={index}
                 >
                   <p>
@@ -361,7 +367,7 @@ const ChatRoom: React.FC = () => {
           </Button>
         )}
       </div>
-
+      {/* 輸入框 */}
       <div className="flex items-center justify-center gap-2 w-full mt-4">
         <Input
           placeholder={t('page.chatRoom.pleaseEnterYourMessage')}
