@@ -215,6 +215,7 @@ export default {
         latitude: 'Latitude',
         longitude: 'Longitude',
         searchRadiusUnit: 'm',
+        formattedAddress: 'Address',
       },
     },
 

@@ -202,6 +202,7 @@ export default {
         latitude: '緯度',
         longitude: '経度',
         searchRadiusUnit: 'メートル',
+        formattedAddress: '住所',
       },
     },
 

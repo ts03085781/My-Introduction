@@ -191,6 +191,7 @@ export default {
         latitude: '緯度',
         longitude: '經度',
         searchRadiusUnit: '公尺',
+        formattedAddress: '地址',
       },
     },
 

@@ -4,6 +4,9 @@ import { Button, Card, Input, Select } from 'antd';
 import marker from '@/assets/images/marker.png';
 import { SearchOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '@/store/slices/themeSlice';
+import { mapStylesOfDarkTheme } from '@/constants/restaurantFinder';
 
 // 地圖容器的樣式
 const mapContainerStyle = {
@@ -32,6 +35,7 @@ const RestaurantFinder = () => {
   const [minRating, setMinRating] = useState(4); // 預設最低星星數 4
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
+  const theme = useSelector(selectTheme);
 
   // 翻譯營業狀態
   const translateBusinessStatus = (businessStatus: string) => {
@@ -135,7 +139,6 @@ const RestaurantFinder = () => {
 
   return (
     <div className="h-full">
-      {/* 左側控制與結果面板 */}
       <Card className="mb-4">
         <h2 className="text-xl font-bold mb-2">
           {t('page.restaurantFinder.title')}
@@ -173,7 +176,7 @@ const RestaurantFinder = () => {
             </Select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block">
               {t('page.restaurantFinder.currentLocation')}
             </label>
             <Input
@@ -196,28 +199,29 @@ const RestaurantFinder = () => {
       </Card>
 
       {/* 地圖 */}
-      <div className="flex w-full border rounded-lg h-[calc(100vh-382px)]">
+      <div className="flex w-full border rounded-lg h-[calc(100vh-382px)] dark:bg-[#1f2937] dark:border-none">
         {/* 左側餐廳列表 */}
         <div className=" overflow-y-auto p-4 w-[460px]">
           {restaurants.length > 0 &&
             restaurants.map((place) => (
               <div
                 key={place.id}
-                className="p-4 mb-2 bg-white rounded-lg border border-gray-300"
+                className="p-4 mb-2 rounded-lg border border-gray-300 dark:border-gray-700"
               >
                 <h3 className="text-lg font-semibold">{place.displayName}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {t('page.restaurantFinder.rating')}: {place.rating} ⭐
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {t('page.restaurantFinder.userRatingCount')}:{' '}
                   {place.userRatingCount}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {t('page.restaurantFinder.businessStatus.title')}:{' '}
                   {translateBusinessStatus(place.businessStatus)}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t('page.restaurantFinder.formattedAddress')}:{' '}
                   {place.formattedAddress}
                 </p>
               </div>
@@ -236,6 +240,15 @@ const RestaurantFinder = () => {
               mapContainerStyle={mapContainerStyle}
               center={currentLocation}
               zoom={15}
+              options={{
+                styles: theme === 'dark' ? mapStylesOfDarkTheme : [], // 亮色模式使用預設樣式
+                zoomControl: true, // 縮放控制
+                mapTypeControl: false, // 地圖類型控制
+                scaleControl: true, // 比例尺控制
+                streetViewControl: false, // 街景檢視控制
+                rotateControl: false, // 旋轉控制
+                fullscreenControl: true, // 全螢幕控制
+              }}
             >
               {/* 使用者位置標記 */}
               <Marker
