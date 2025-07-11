@@ -216,6 +216,8 @@ export default {
         longitude: 'Longitude',
         searchRadiusUnit: 'm',
         formattedAddress: 'Address',
+        showedRestaurantRoute: 'Showed Restaurant Route',
+        clearRoute: 'Clear Route',
       },
     },
 

@@ -203,6 +203,8 @@ export default {
         longitude: '経度',
         searchRadiusUnit: 'メートル',
         formattedAddress: '住所',
+        showedRestaurantRoute: 'このレストランのルートを表示',
+        clearRoute: 'ルートをクリア',
       },
     },
 

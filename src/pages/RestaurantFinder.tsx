@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { GoogleMap, Marker, Circle } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  Marker,
+  Circle,
+  DirectionsRenderer,
+} from '@react-google-maps/api';
 import { Button, Card, Input, Select } from 'antd';
 import marker from '@/assets/images/marker.png';
 import { SearchOutlined } from '@ant-design/icons';
@@ -25,16 +30,23 @@ interface Restaurant {
   businessStatus: string;
 }
 
+interface CurrentLocation {
+  lat: number;
+  lng: number;
+}
+
 const RestaurantFinder = () => {
   const { t } = useTranslation();
-  const [currentLocation, setCurrentLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const [searchRadius, setSearchRadius] = useState(0); // 預設搜尋半徑 0 公尺
-  const [minRating, setMinRating] = useState(4); // 預設最低星星數 4
+  const [currentLocation, setCurrentLocation] =
+    useState<CurrentLocation | null>(null);
+  const [searchRadius, setSearchRadius] = useState<number>(0); // 預設搜尋半徑 0 公尺
+  const [minRating, setMinRating] = useState<number>(4); // 預設最低星星數 4
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [directions, setDirections] =
+    useState<google.maps.DirectionsResult | null>(null);
+  const [selectedRestaurant, setSelectedRestaurant] =
+    useState<Restaurant | null>(null);
   const theme = useSelector(selectTheme);
 
   // 翻譯營業狀態
@@ -76,6 +88,8 @@ const RestaurantFinder = () => {
     if (!currentLocation) return;
     setLoading(true);
     setRestaurants([]);
+    setDirections(null); // 清除路線
+    setSelectedRestaurant(null); // 清除選中的餐廳
 
     try {
       const request = {
@@ -127,6 +141,36 @@ const RestaurantFinder = () => {
       setLoading(false);
     }
   }, [currentLocation, searchRadius, minRating]);
+
+  // 處理餐廳卡片點擊事件
+  const handleRestaurantClick = useCallback(
+    async (restaurant: Restaurant) => {
+      if (!currentLocation) return;
+
+      setSelectedRestaurant(restaurant);
+
+      try {
+        const directionsService = new google.maps.DirectionsService();
+
+        const result = await directionsService.route({
+          origin: currentLocation,
+          destination: restaurant.location,
+          travelMode: google.maps.TravelMode.WALKING,
+        });
+
+        setDirections(result);
+      } catch (error) {
+        console.error('路線計算失敗:', error);
+      }
+    },
+    [currentLocation]
+  );
+
+  // 清除路線
+  const clearRoute = useCallback(() => {
+    setDirections(null);
+    setSelectedRestaurant(null);
+  }, []);
 
   // 渲染主畫面
   if (loading && !currentLocation) {
@@ -201,33 +245,43 @@ const RestaurantFinder = () => {
       {/* 地圖 */}
       <div className="flex w-full border rounded-lg h-[calc(100vh-382px)] dark:bg-[#1f2937] dark:border-none">
         {/* 左側餐廳列表 */}
-        <div className=" overflow-y-auto p-4 w-[460px]">
-          {restaurants.length > 0 &&
-            restaurants.map((place) => (
-              <div
-                key={place.id}
-                className="p-4 mb-2 rounded-lg border border-gray-300 dark:border-gray-700"
-              >
-                <h3 className="text-lg font-semibold">{place.displayName}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('page.restaurantFinder.rating')}: {place.rating} ⭐
+        <div className="restaurant-list overflow-y-auto p-4 w-[460px]">
+          {restaurants.map((place) => (
+            <div
+              key={place.id}
+              className={`restaurant-card p-4 mb-2 rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-105 ${
+                selectedRestaurant?.id === place.id
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                  : 'border-gray-300 dark:border-gray-700'
+              }`}
+              onClick={() => handleRestaurantClick(place)}
+            >
+              <h3 className="text-lg font-semibold">{place.displayName}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('page.restaurantFinder.rating')}: {place.rating} ⭐
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('page.restaurantFinder.userRatingCount')}:{' '}
+                {place.userRatingCount}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('page.restaurantFinder.businessStatus.title')}:{' '}
+                {translateBusinessStatus(place.businessStatus)}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('page.restaurantFinder.formattedAddress')}:{' '}
+                {place.formattedAddress}
+              </p>
+              {selectedRestaurant?.id === place.id && (
+                <p className="text-sm text-blue-600 dark:text-blue-400 mt-2 font-medium">
+                  {t('page.restaurantFinder.showedRestaurantRoute')}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('page.restaurantFinder.userRatingCount')}:{' '}
-                  {place.userRatingCount}
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('page.restaurantFinder.businessStatus.title')}:{' '}
-                  {translateBusinessStatus(place.businessStatus)}
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('page.restaurantFinder.formattedAddress')}:{' '}
-                  {place.formattedAddress}
-                </p>
-              </div>
-            ))}
+              )}
+            </div>
+          ))}
+
           {restaurants.length === 0 && (
-            <p className=" text-red-500 text-center text-lg">
+            <p className="text-red-500 text-center text-lg">
               {t('page.restaurantFinder.noRestaurantFound')}
             </p>
           )}
@@ -279,14 +333,35 @@ const RestaurantFinder = () => {
                     url: marker,
                     scaledSize: new google.maps.Size(36, 36),
                   }}
-                  //   label={{
-                  //     text: place.displayName,
-                  //     color: 'blue',
-                  //     fontWeight: 'bold',
-                  //     fontSize: '14px',
-                  //   }}
+                  onClick={() => handleRestaurantClick(place)}
                 />
               ))}
+
+              {/* 路線渲染 */}
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    polylineOptions: {
+                      strokeColor: '#3b82f6',
+                      strokeWeight: 5,
+                    },
+                  }}
+                />
+              )}
+
+              {/* 清除路線按鈕 */}
+              {selectedRestaurant && (
+                <div className="flex justify-center mt-4 w-fit mx-auto">
+                  <Button
+                    type="primary"
+                    onClick={clearRoute}
+                    className="w-full"
+                  >
+                    {t('page.restaurantFinder.clearRoute')}
+                  </Button>
+                </div>
+              )}
             </GoogleMap>
           )}
         </div>
