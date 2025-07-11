@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   GoogleMap,
   Marker,
@@ -48,6 +48,9 @@ const RestaurantFinder = () => {
   const [selectedRestaurant, setSelectedRestaurant] =
     useState<Restaurant | null>(null);
   const theme = useSelector(selectTheme);
+  const restaurantCardRefs = useRef<{ [id: string]: HTMLDivElement | null }>(
+    {}
+  );
 
   // 翻譯營業狀態
   const translateBusinessStatus = (businessStatus: string) => {
@@ -172,6 +175,18 @@ const RestaurantFinder = () => {
     setSelectedRestaurant(null);
   }, []);
 
+  useEffect(() => {
+    if (
+      selectedRestaurant &&
+      restaurantCardRefs.current[selectedRestaurant.id]
+    ) {
+      restaurantCardRefs.current[selectedRestaurant.id]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [selectedRestaurant]);
+
   // 渲染主畫面
   if (loading && !currentLocation) {
     return <div className="p-8">正在取得您的位置...</div>;
@@ -249,6 +264,9 @@ const RestaurantFinder = () => {
           {restaurants.map((place) => (
             <div
               key={place.id}
+              ref={(el) => {
+                restaurantCardRefs.current[place.id] = el;
+              }}
               className={`restaurant-card p-4 mb-2 rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-105 ${
                 selectedRestaurant?.id === place.id
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
