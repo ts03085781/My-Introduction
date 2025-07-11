@@ -18,6 +18,8 @@ interface Restaurant {
   formattedAddress: string;
   rating: number;
   location: google.maps.LatLng;
+  userRatingCount: number;
+  businessStatus: string;
 }
 
 const RestaurantFinder = () => {
@@ -30,6 +32,20 @@ const RestaurantFinder = () => {
   const [minRating, setMinRating] = useState(4); // 預設最低星星數 4
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // 翻譯營業狀態
+  const translateBusinessStatus = (businessStatus: string) => {
+    switch (businessStatus) {
+      case 'OPERATIONAL':
+        return t('page.restaurantFinder.businessStatus.OPERATIONAL');
+      case 'CLOSED_PERMANENTLY':
+        return t('page.restaurantFinder.businessStatus.CLOSED_PERMANENTLY');
+      case 'CLOSED_TEMPORARILY':
+        return t('page.restaurantFinder.businessStatus.CLOSED_TEMPORARILY');
+      default:
+        return businessStatus;
+    }
+  };
 
   // 當元件載入時，取得使用者位置
   useEffect(() => {
@@ -59,7 +75,15 @@ const RestaurantFinder = () => {
 
     try {
       const request = {
-        fields: ['id', 'displayName', 'formattedAddress', 'rating', 'location'],
+        fields: [
+          'id',
+          'displayName',
+          'formattedAddress',
+          'rating',
+          'location',
+          'userRatingCount',
+          'businessStatus',
+        ],
         locationRestriction: {
           center: currentLocation,
           radius: searchRadius,
@@ -82,6 +106,8 @@ const RestaurantFinder = () => {
           formattedAddress: p.formattedAddress!,
           rating: p.rating!,
           location: new google.maps.LatLng(p.location!),
+          userRatingCount: p.userRatingCount!,
+          businessStatus: p.businessStatus!,
         })) as Restaurant[];
 
         // 排序
@@ -182,6 +208,14 @@ const RestaurantFinder = () => {
                 <h3 className="text-lg font-semibold">{place.displayName}</h3>
                 <p className="text-sm text-gray-600">
                   {t('page.restaurantFinder.rating')}: {place.rating} ⭐
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t('page.restaurantFinder.userRatingCount')}:{' '}
+                  {place.userRatingCount}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {t('page.restaurantFinder.businessStatus.title')}:{' '}
+                  {translateBusinessStatus(place.businessStatus)}
                 </p>
                 <p className="text-sm text-gray-500">
                   {place.formattedAddress}
