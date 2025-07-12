@@ -260,7 +260,7 @@ const RestaurantFinder = () => {
       </Card>
 
       {/* 地圖 */}
-      <div className="flex w-full border rounded-lg h-[calc(100vh-382px)] dark:bg-[#1f2937] dark:border-none">
+      <div className="flex w-full border rounded-lg h-[calc(100vh-120px)] dark:bg-[#1f2937] dark:border-none">
         {/* 左側餐廳列表 */}
         <div className="restaurant-list overflow-y-auto p-4 w-[460px]">
           {restaurants.map((place) => (
