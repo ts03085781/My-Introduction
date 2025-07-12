@@ -5,7 +5,7 @@ import {
   Circle,
   DirectionsRenderer,
 } from '@react-google-maps/api';
-import { Button, Card, Input, Select } from 'antd';
+import { Button, Card, Input, Select, Tooltip } from 'antd';
 import marker from '@/assets/images/marker.png';
 import { SearchOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -245,15 +245,17 @@ const RestaurantFinder = () => {
               readOnly
             />
           </div>
-          <Button
-            size="middle"
-            className="text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
-            type="primary"
-            onClick={handleSearch}
-            disabled={loading}
-          >
-            <SearchOutlined />
-          </Button>
+          <Tooltip title={t('page.restaurantFinder.search')}>
+            <Button
+              size="middle"
+              className="text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+              type="primary"
+              onClick={handleSearch}
+              disabled={loading}
+            >
+              <SearchOutlined />
+            </Button>
+          </Tooltip>
         </div>
       </Card>
 

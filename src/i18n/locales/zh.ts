@@ -194,6 +194,7 @@ export default {
         formattedAddress: '地址',
         showedRestaurantRoute: '已顯示此餐廳路線',
         clearRoute: '清除路線',
+        search: '搜尋',
       },
     },
 

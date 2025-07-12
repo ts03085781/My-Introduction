@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Layout, Menu, Button, Switch, Dropdown } from 'antd';
+import { Utensils } from 'lucide-react';
+
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -14,7 +16,6 @@ import {
   CloudOutlined,
   OpenAIOutlined,
   MessageOutlined,
-  CoffeeOutlined,
 } from '@ant-design/icons';
 import { toggleTheme, selectTheme } from '@/store/slices/themeSlice';
 import { changeLanguage, selectLanguage } from '@/store/slices/languageSlice';
@@ -93,7 +94,7 @@ const MainLayout = () => {
     },
     {
       key: '/restaurantFinder',
-      icon: <CoffeeOutlined />,
+      icon: <Utensils size={16} strokeWidth={1} />,
       label: (
         <Link to="/restaurantFinder">{t('sidebar.restaurantFinder')}</Link>
       ),

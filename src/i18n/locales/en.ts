@@ -218,6 +218,7 @@ export default {
         formattedAddress: 'Address',
         showedRestaurantRoute: 'Showed Restaurant Route',
         clearRoute: 'Clear Route',
+        search: 'Search',
       },
     },
 

@@ -205,6 +205,7 @@ export default {
         formattedAddress: '住所',
         showedRestaurantRoute: 'このレストランのルートを表示',
         clearRoute: 'ルートをクリア',
+        search: '検索',
       },
     },
 
