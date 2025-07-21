@@ -4,6 +4,7 @@ import { GithubOutlined } from '@ant-design/icons';
 import { PortfolioItems } from '@/types/portfolio';
 import myIntroduction from '@/assets/images/myIntroduction.png';
 import webSocketServer from '@/assets/images/webSocketServer.png';
+import aiMangas from '@/assets/images/aiMangas.png';
 
 const { Title, Paragraph } = Typography;
 
@@ -48,6 +49,23 @@ const PortfolioWorks = () => {
       description: t('page.portfolio.project_2.description'),
       tags: ['Node.js', 'WebSocket'],
       github: 'https://github.com/ts03085781/webSocket-server',
+    },
+    {
+      id: 3,
+      title: '',
+      image: aiMangas,
+      description: t('page.portfolio.project_3.description'),
+      tags: [
+        'Next',
+        'TypeScript',
+        'Tailwind',
+        'Node.js',
+        'MongoDB',
+        'cloudinary',
+        'ESLint',
+        'Prettier',
+      ],
+      github: 'https://github.com/ts03085781/vibe-next',
     },
   ];
 

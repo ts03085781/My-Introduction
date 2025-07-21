@@ -122,6 +122,10 @@ export default {
           description:
             'Node.jsを使用して構築されたWebSocketサーバープロジェクト。前後端分離のアーキテクチャを採用し、My-Introductionプロジェクトのチャットルーム接続に特化しています。WebSocketを使用してリアルタイム通信機能を実現しています。',
         },
+        project_3: {
+          description:
+            'AI小説坊（エーアイしょうせつぼう）**は、短編小説や漫画の閲覧・管理ができる現代的なプラットフォームです。作品のアップロード、カテゴリ分け、閲覧、音声読み上げ、PWAインストールなどの機能を備えています。フロントエンドは Next.js、React、Tailwind CSS を使用し、バックエンドは Node.js と MongoDB Atlas を連携。さらに、ChatGPT API を使ったコンテンツ生成にも対応しています。',
+        },
       },
       skyLog: {
         search: '検索',

@@ -112,6 +112,10 @@ export default {
           description:
             '由node.js建立的WebSocket伺服器專案,採取前後端分離的架構模式,專門給My-Introduction專案中的聊天室連線使用,並且使用WebSocket實現即時通訊功能',
         },
+        project_3: {
+          description:
+            'AI小說坊是一個現代化的短篇小說/漫畫閱讀與管理平台，支援漫畫/小說上傳、分類、閱讀、語音朗讀、PWA 安裝等功能。前端採用 Next.js + React + Tailwind CSS，後端串接 Node.js 與 MongoDB Atlas，並可整合 ChatGPT API 生成內容。',
+        },
       },
       skyLog: {
         search: '搜尋',

@@ -134,6 +134,10 @@ export default {
           description:
             'A WebSocket server project built with Node.js, adopting a front-end and back-end separation architecture, specializing in connecting to the chat room in the My-Introduction project using WebSocket to implement real-time communication functionality.',
         },
+        project_3: {
+          description:
+            'AI Fiction Hub is a modern platform for reading and managing short stories and comics. It supports features like content upload, categorization, reading, text-to-speech, and PWA installation. The frontend is built with Next.js, React, and Tailwind CSS, while the backend integrates Node.js and MongoDB Atlas. It also supports content generation via the ChatGPT API.',
+        },
       },
       skyLog: {
         search: 'Search',
