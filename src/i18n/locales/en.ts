@@ -126,6 +126,7 @@ export default {
         title: 'Portfolio Works',
         description:
           'Here are some of my recent projects. Click on each project to view the github.',
+        websiteLink: 'Website Link',
         project_1: {
           description:
             'A personal portfolio website built with Vite, based on React + TypeScript. Supports multi-language switching (react-i18next), routing management (react-router), server-side data caching and synchronization management (react-query), responsive design built with Tailwind CSS, and integration of Ant Design component library to improve development efficiency. Introduced Storybook for component development and testing, used Vitest for unit testing to ensure component stability. In terms of code quality, combined ESLint and Prettier for static analysis and automatic formatting, and introduced Husky + lint-staged and Commitlint + Commitizen to establish Git flow specifications, improving team collaboration and version control quality.',
@@ -136,7 +137,7 @@ export default {
         },
         project_3: {
           description:
-            'AI Fiction Hub is a modern platform for reading and managing short stories and comics. It supports features like content upload, categorization, reading, text-to-speech, and PWA installation. The frontend is built with Next.js, React, and Tailwind CSS, while the backend integrates Node.js and MongoDB Atlas. It also supports content generation via the ChatGPT API.',
+            'VoiceToon is a voice-enabled novel platform dedicated to providing users with an immersive reading experience. By integrating modern web technologies with AI content generation, users can not only read compelling stories but also enjoy voice narration. Utilizing the Web Speech API, we bring each paragraph to life, allowing stories to be “heard” and making reading more vivid and enjoyable — redefining the digital reading experience. VoiceToon is also a cradle for creators. We offer comprehensive tools for authors, from uploading works and managing chapters to interacting with the community — every step is thoughtfully designed. Readers can discover new worlds here, and writers can share their stories, co-creating literary works that belong to this era.',
         },
       },
       skyLog: {

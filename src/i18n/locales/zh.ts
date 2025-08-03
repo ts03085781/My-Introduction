@@ -104,6 +104,7 @@ export default {
       portfolio: {
         title: '作品集',
         description: '這裡有一些我最近的作品。點擊每個作品以查看 GitHub。',
+        websiteLink: '網站連結',
         project_1: {
           description:
             '使用 Vite 建立的個人作品集介紹網站，技術架構基於 React + TypeScript。專案支援 多語系切換（react-i18next）、路由管理（react-router）、伺服器資料快取與同步管理（react-query），搭配 Tailwind CSS 建構響應式介面設計，並整合 Ant Design 元件庫提升開發效率。開發流程中導入 Storybook 進行元件開發與測試，使用 Vitest 執行單元測試，確保元件穩定性。代碼品質方面，結合 ESLint 與 Prettier 實施靜態檢查與自動格式化，並透過 Husky + lint-staged 與 Commitlint + Commitizen 建立 Git 提交流程規範，強化團隊協作與版本控制品質。',
@@ -114,7 +115,7 @@ export default {
         },
         project_3: {
           description:
-            'AI小說坊是一個現代化的短篇小說/漫畫閱讀與管理平台，支援漫畫/小說上傳、分類、閱讀、語音朗讀、PWA 安裝等功能。前端採用 Next.js + React + Tailwind CSS，後端串接 Node.js 與 MongoDB Atlas，並可整合 ChatGPT API 生成內容。',
+            'VoiceToon 是一個有聲小說平台，致力於為用戶提供沉浸式的閱讀體驗。平台結合了現代化的網頁技術與 AI 內容生成能力，讓用戶不僅能閱讀精彩的小說內容，還能享受語音朗讀功能，運用 Web Speech API 技術，我們為每一段文字注入了生命，讓故事能夠被「聽見」，讓閱讀變得更加生動有趣，打造全新的數位閱讀體驗。 VoiceToon 更是一個創作的搖籃。我們為作者提供了完整的創作工具，從作品上傳、章節管理到社群互動，每一個環節都經過精心設計。讀者可以在這裡發現新世界，作者可以在這裡分享故事，共同創造出屬於這個時代的文學作品。',
         },
       },
       skyLog: {

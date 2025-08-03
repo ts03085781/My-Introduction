@@ -1,10 +1,10 @@
 import { Typography, Card, Row, Col, Tag, Button, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { GithubOutlined } from '@ant-design/icons';
+import { GithubOutlined, LinkOutlined } from '@ant-design/icons';
 import { PortfolioItems } from '@/types/portfolio';
 import myIntroduction from '@/assets/images/myIntroduction.png';
 import webSocketServer from '@/assets/images/webSocketServer.png';
-import aiMangas from '@/assets/images/aiMangas.png';
+import voiceToon from '@/assets/images/voiceToon.png';
 
 const { Title, Paragraph } = Typography;
 
@@ -52,20 +52,29 @@ const PortfolioWorks = () => {
     },
     {
       id: 3,
-      title: '',
-      image: aiMangas,
-      description: t('page.portfolio.project_3.description'),
+      title: 'VoiceToon',
+      image: voiceToon,
+      description: t('page.portfolio.project_3.description', {
+        url: 'https://voice-toon.vercel.app/',
+      }),
       tags: [
+        'React',
         'Next',
         'TypeScript',
+        'Zustand',
         'Tailwind',
         'Node.js',
         'MongoDB',
+        'Mongoose',
         'cloudinary',
         'ESLint',
         'Prettier',
+        'Cloudinary',
+        'React Icons',
+        'Web Speech API',
       ],
       github: 'https://github.com/ts03085781/vibe-next',
+      link: 'https://voicetoon.vercel.app/',
     },
   ];
 
@@ -101,6 +110,15 @@ const PortfolioWorks = () => {
                 >
                   GitHub
                 </Button>
+                {item.link && (
+                  <Button
+                    icon={<LinkOutlined />}
+                    href={item.link}
+                    target="_blank"
+                  >
+                    {t('page.portfolio.websiteLink')}
+                  </Button>
+                )}
               </div>
             </Card>
           </Col>
